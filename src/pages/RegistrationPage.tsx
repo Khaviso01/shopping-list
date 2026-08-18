@@ -1,4 +1,3 @@
-import '../App.tsx'
 import '../index.css';
 import { Link } from 'react-router-dom';
 
