@@ -2,8 +2,9 @@
 
 :root {
   --color-white: #ffffff;
-  --color-primary: #69b294;
-  --color-primary-dark: #4f8f73;
+  --color-primary: #10a25f;
+  --color-primary-dark: #10a25f; 
+  --color-secondary: #6b6b6b;
   --color-primary-light: #eaf5f0;
   --color-ink: #1f2d28;
   --color-ink-muted: #5b6c65;
@@ -70,7 +71,7 @@ button {
 }
 
 .login-content p {
-  color: #666666;
+  color: var(color-secondary);
   font-size: 15px;
   margin: 0 0 28px 0;
   line-height: 1.4;

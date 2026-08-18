@@ -6,7 +6,7 @@ function LoginPage() {
     <div className="login-container">
       <div className="login-content">
         <h2>Welcome back</h2>
-        <p>Sign in to pick up your shopping lists right where you left them.</p>
+        <p>Sign in to pick up your shopping list right where you left it.</p>
 
         <form className="login-form">
           <label htmlFor="email">Email Address</label>
@@ -14,7 +14,7 @@ function LoginPage() {
           <input
             type="email"
             id="email"
-            placeholder="Enter your email address"
+            placeholder="example@gmail.com"
           />
 
           <label htmlFor="password">Password</label>
@@ -27,7 +27,7 @@ function LoginPage() {
 
           <button type="submit">Sign in</button>
 
-          <p>New here? <Link to="/register">Create an account</Link></p>
+          <p>Don't have a profile? <Link to="/register">Create an account</Link></p>
         </form>
       </div>
     </div>

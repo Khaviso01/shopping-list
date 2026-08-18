@@ -7,7 +7,7 @@ export const RegistrationPage = () => {
     <div className="login-container">
       <div className="login-content">
         <h2>Create a profile</h2>
-        <p>It only takes a minute..</p>
+        <p>It only takes a minute.</p>
 
         <form className="signup-form">
           <label htmlFor="name">Name</label>
@@ -31,7 +31,7 @@ export const RegistrationPage = () => {
           <input
             type="email"
             id="email"
-            placeholder="Enter your email address"
+            placeholder="example@gmail.com"
           />
 
           <label htmlFor="password">Password</label>
