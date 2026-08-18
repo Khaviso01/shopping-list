@@ -2,9 +2,8 @@
 
 :root {
   --color-white: #ffffff;
-  --color-primary: #10a25f;
-  --color-primary-dark: #10a25f; 
-  --color-secondary: #6b6b6b;
+  --color-primary: #69b294;
+  --color-primary-dark: #4f8f73;
   --color-primary-light: #eaf5f0;
   --color-ink: #1f2d28;
   --color-ink-muted: #5b6c65;
@@ -21,7 +20,6 @@
 
 * {
   box-sizing: border-box;
-  font-family: var(--font-display);
 }
 
 html,
@@ -32,6 +30,7 @@ body,
 
 body {
   margin: 0;
+  font-family: var(--font-display);
   color: var(--color-ink);
   background: var(--color-white);
 }
@@ -71,7 +70,7 @@ button {
 }
 
 .login-content p {
-  color: var(color-secondary);
+  color: #666666;
   font-size: 15px;
   margin: 0 0 28px 0;
   line-height: 1.4;
