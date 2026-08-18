@@ -21,6 +21,7 @@
 
 * {
   box-sizing: border-box;
+  font-family: var(--font-display);
 }
 
 html,
@@ -31,7 +32,6 @@ body,
 
 body {
   margin: 0;
-  font-family: var(--font-display);
   color: var(--color-ink);
   background: var(--color-white);
 }
