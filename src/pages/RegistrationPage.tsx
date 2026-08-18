@@ -6,7 +6,7 @@ export const RegistrationPage = () => {
   return (
     <div className="login-container">
       <div className="login-content">
-        <h2>Create an account</h2>
+        <h2>Create a profile</h2>
         <p>It only takes a minute..</p>
 
         <form className="signup-form">
@@ -50,7 +50,9 @@ export const RegistrationPage = () => {
             placeholder="Confirm your password"
           />
 
-          <p>Already have an account<Link to="/login">Sign in</Link></p>
+          <button type="submit">Sign up</button>
+
+          <p>Already have an account? <Link to="/login">Sign in</Link></p>
         </form>
       </div>
     </div>
