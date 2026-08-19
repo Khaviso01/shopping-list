@@ -9,7 +9,7 @@ function LoginPage() {
         <p>Sign in to pick up your shopping list right where you left it.</p>
 
         <form className="login-form">
-          <label htmlFor="email">Email Address</label>
+          <label htmlFor="email">Email Address <span>*</span> </label>
 
           <input
             type="email"
@@ -17,7 +17,7 @@ function LoginPage() {
             placeholder="example@gmail.com"
           />
 
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Password <span>*</span> </label>
 
           <input
             type="password"

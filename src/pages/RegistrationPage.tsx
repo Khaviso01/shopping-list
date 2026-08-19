@@ -9,7 +9,7 @@ export const RegistrationPage = () => {
         <p>It only takes a minute.</p>
 
         <form className="signup-form">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">Name <span>*</span> </label>
 
           <input
             type="text"
@@ -17,7 +17,7 @@ export const RegistrationPage = () => {
             placeholder="Enter your name"
           />
 
-          <label htmlFor="surname">Surname</label>
+          <label htmlFor="surname">Surname <span>*</span> </label>
 
           <input
             type="text"
@@ -25,7 +25,7 @@ export const RegistrationPage = () => {
             placeholder="Enter your surname"
           />
 
-          <label htmlFor="email">Email Address</label>
+          <label htmlFor="email">Email Address <span>*</span> </label>
 
           <input
             type="email"
@@ -33,7 +33,7 @@ export const RegistrationPage = () => {
             placeholder="example@gmail.com"
           />
 
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Password <span>*</span> </label>
 
           <input
             type="password"

@@ -8,18 +8,19 @@
   --color-ink: #1f2d28;
   --color-ink-muted: #5b6c65;
   --color-border: #d9e6e0;
-  --color-error: #c4453b;
+  --color-error: #ff1100;
   --color-error-bg: #fbeceb;
 
   --font-display: 'Geist', sans-serif;
   --font-body: 'Geist', sans-serif;
 
-  --radius-md: 10px;
+  --radius-md: 9px;
   --radius-lg: 20px;
 }
 
 * {
   box-sizing: border-box;
+  font-family: var(--font-display);
 }
 
 html,
@@ -30,7 +31,6 @@ body,
 
 body {
   margin: 0;
-  font-family: var(--font-display);
   color: var(--color-ink);
   background: var(--color-white);
 }
@@ -41,6 +41,10 @@ a {
 
 button {
   font-family: inherit;
+}
+
+span {
+  color: var(--color-error);
 }
 
 /* Base centering wrapper */
@@ -95,7 +99,7 @@ button {
   padding: 0 16px;
   margin-bottom: 20px;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 15px;
   color: #2d3748;
   background-color: #ffffff;
@@ -119,7 +123,7 @@ button {
   background-color: #62b18d;
   color: #ffffff;
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -203,7 +207,7 @@ button {
   padding: 0 16px;
   margin-bottom: 18px;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 15px;
   color: #2d3748;
   background-color: #ffffff;
@@ -227,7 +231,7 @@ button {
   background-color: #62b18d;
   color: #ffffff;
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
