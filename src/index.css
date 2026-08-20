@@ -305,6 +305,11 @@ span {
   cursor: pointer;
 }
 
+.header-actions{
+  display: flex;
+  align-items: center;
+}
+
 .header-actions button {
   background: none;
   border: none;

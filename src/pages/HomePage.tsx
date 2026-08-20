@@ -54,6 +54,7 @@ export const HomePage: React.FC = () => {
         <div className="header-title-row">
           <button className="title">Listly</button>
           <div className="header-actions">
+            <button type="submit">Sign out</button>
             <button type="button" className="icon-btn" aria-label="Profile" onClick={() => navigate('/profile')}>
               <HugeiconsIcon icon={User02Icon} size={24} />
             </button>
