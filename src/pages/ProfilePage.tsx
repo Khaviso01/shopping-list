@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../redux/store';
-import { updateProfile, logout } from '../redux/authSlice';
+import { updateProfile } from '../redux/authSlice';
 import '../index.css';
 
 export const ProfilePage: React.FC = () => {
@@ -25,11 +25,6 @@ export const ProfilePage: React.FC = () => {
     e.preventDefault();
     dispatch(updateProfile(formData));
     alert('Profile updated successfully!');
-  };
-
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/login');
   };
 
   return (
@@ -81,9 +76,6 @@ export const ProfilePage: React.FC = () => {
         <div className="profile-actions">
           <button type="button" className="secondary-btn" onClick={() => navigate('/home')}>
             Back to Home
-          </button>
-          <button type="button" className="signout-btn" onClick={handleLogout}>
-            Sign Out
           </button>
         </div>
       </div>

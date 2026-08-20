@@ -8,6 +8,7 @@ import {
   User02Icon, ShoppingBagRemoveIcon, Delete02Icon
 } from '@hugeicons/core-free-icons';
 import '../index.css';
+import { logout } from '../redux/authSlice';
 
 export const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +18,11 @@ export const HomePage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleLogout = () => {
+      dispatch(logout());
+      navigate('/login');
+    };
 
   const items = useSelector((state: RootState) => state.shoppingList.items);
   const sortBy = searchParams.get('sort') || 'name';
@@ -54,7 +60,9 @@ export const HomePage: React.FC = () => {
         <div className="header-title-row">
           <button className="title">Listly</button>
           <div className="header-actions">
-            <button type="submit">Sign out</button>
+            <button type="button" className="signout-btn" onClick={handleLogout}>
+              Sign Out
+            </button>
             <button type="button" className="icon-btn" aria-label="Profile" onClick={() => navigate('/profile')}>
               <HugeiconsIcon icon={User02Icon} size={24} />
             </button>
