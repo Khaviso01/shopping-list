@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
 :root {
   --color-white: #ffffff;
@@ -12,6 +13,7 @@
   --color-error-bg: #fbeceb;
 
   --font-display: 'Geist', sans-serif;
+  --secondary-font-display: 'Lobster', cursive;
   --font-body: 'Geist', sans-serif;
 
   --radius-md: 9px;
@@ -274,7 +276,7 @@ span {
 }
 
 /* Teal Header */
-.teal-header {
+.header {
   background-color: #3b9b9b;
   color: #ffffff;
   padding: 12px 16px 16px;
@@ -292,14 +294,14 @@ span {
   align-items: center;
 }
 
-.dropdown-pill {
+.title {
   background-color: rgba(255, 255, 255, 0.25);
+  font-family: var(--secondary-font-display);
   color: #ffffff;
   border: none;
   padding: 6px 16px;
   border-radius: 16px;
   font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
 }
 
@@ -544,6 +546,7 @@ span {
   background-color: #3b9b9b;
   color: #ffffff;
   border: none;
+  margin-top: 24px;
   border-radius: 10px;
   font-size: 15px;
   font-weight: 600;

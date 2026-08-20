@@ -3,13 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import type { RootState } from '../redux/store';
 import { addItem, deleteItem, type ShoppingItem } from '../redux/shoppingListSlice';
+import { HugeiconsIcon } from '@hugeicons/react';
+import {
+  User02Icon, ShoppingBagRemoveIcon, Delete02Icon
+} from '@hugeicons/core-free-icons';
 import '../index.css';
 
 export const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemName, setItemName] = useState('');
   const [itemCategory, setItemCategory] = useState('General');
-  
+
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,7 +26,7 @@ export const HomePage: React.FC = () => {
     if (!itemName.trim()) return;
 
     dispatch(addItem({ name: itemName.trim(), category: itemCategory.trim() || 'General' }));
-    
+
     // Reset and close
     setItemName('');
     setItemCategory('General');
@@ -46,12 +50,12 @@ export const HomePage: React.FC = () => {
   return (
     <div className="app-viewport">
       {/* Header */}
-      <header className="teal-header">
+      <header className="header">
         <div className="header-title-row">
-          <button className="dropdown-pill">Listly</button>
+          <button className="title">Listly</button>
           <div className="header-actions">
             <button type="button" className="icon-btn" aria-label="Profile" onClick={() => navigate('/profile')}>
-              Profile Icon here
+              <HugeiconsIcon icon={User02Icon} size={24} />
             </button>
           </div>
         </div>
@@ -80,8 +84,8 @@ export const HomePage: React.FC = () => {
       <main className="content-body">
         {items.length === 0 ? (
           <div className="empty-state">
-            <div className="cart-icon">Cart icon here</div>
-            <h3>Your list is empty!</h3>
+            <div className="cart-icon"><HugeiconsIcon icon={ShoppingBagRemoveIcon} size={82} /></div>
+            <h3>Your shopping list is empty!</h3>
             <p>Start adding items to your list</p>
           </div>
         ) : (
@@ -101,7 +105,7 @@ export const HomePage: React.FC = () => {
                   onClick={() => dispatch(deleteItem(item.id))}
                   title="Delete Item"
                 >
-                  🗑️
+                  <HugeiconsIcon icon={Delete02Icon} />
                 </button>
               </div>
             ))}
