@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../redux/store';
-import { updateProfile } from '../redux/authSlice';
+import { updateProfile, logout } from '../redux/authSlice';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowRight02Icon } from '@hugeicons/core-free-icons';
 import '../index.css';
 
 export const ProfilePage: React.FC = () => {
@@ -27,9 +29,17 @@ export const ProfilePage: React.FC = () => {
     alert('Profile updated successfully!');
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
+
   return (
     <div className="login-container">
       <div className="login-content">
+        <button type="button" className="secondary-btn" onClick={() => navigate('/home')}>
+            Back to Home
+          </button>
         <h2>Profile Details</h2>
         <p>Update your personal information below.</p>
 
@@ -74,8 +84,8 @@ export const ProfilePage: React.FC = () => {
         </form>
 
         <div className="profile-actions">
-          <button type="button" className="secondary-btn" onClick={() => navigate('/home')}>
-            Back to Home
+          <button type="button" className="signout-btn" onClick={handleLogout}>
+            Sign Out <HugeiconsIcon icon={ArrowRight02Icon} />
           </button>
         </div>
       </div>

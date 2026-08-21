@@ -7,35 +7,21 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import {
   User02Icon, ShoppingBagRemoveIcon, Delete02Icon
 } from '@hugeicons/core-free-icons';
+import AddListModal from '../components/AddListModal';
 import '../index.css';
-import { logout } from '../redux/authSlice';
 
 export const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [itemName, setItemName] = useState('');
-  const [itemCategory, setItemCategory] = useState('General');
 
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-      dispatch(logout());
-      navigate('/login');
-    };
-
   const items = useSelector((state: RootState) => state.shoppingList.items);
   const sortBy = searchParams.get('sort') || 'name';
 
-  const handleAddItem = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!itemName.trim()) return;
-
-    dispatch(addItem({ name: itemName.trim(), category: itemCategory.trim() || 'General' }));
-
-    // Reset and close
-    setItemName('');
-    setItemCategory('General');
+  const handleAddItem = (newItem: { name: string; category?: string; quantity?: string; notes?: string; imageUrl?: string }) => {
+    dispatch(addItem(newItem as any));
     setIsModalOpen(false);
   };
 
@@ -60,9 +46,6 @@ export const HomePage: React.FC = () => {
         <div className="header-title-row">
           <button className="title">Listly</button>
           <div className="header-actions">
-            <button type="button" className="signout-btn" onClick={handleLogout}>
-              Sign Out
-            </button>
             <button type="button" className="icon-btn" aria-label="Profile" onClick={() => navigate('/profile')}>
               <HugeiconsIcon icon={User02Icon} size={24} />
             </button>
@@ -99,66 +82,47 @@ export const HomePage: React.FC = () => {
           </div>
         ) : (
           <div className="item-list">
-            {sortedItems.map((item: ShoppingItem) => (
+            {sortedItems.map((item: any) => (
               <div key={item.id} className="item-card">
                 <div className="item-left">
-                  <input type="checkbox" className="round-checkbox" />
+                  {/* Circular Product Image Layout */}
+                  <div className="item-image-circle">
+                    {item.imageUrl ? (
+                      <img src={item.imageUrl} alt={item.name} />
+                    ) : (
+                      <span className="image-fallback">🛒</span>
+                    )}
+                  </div>
                   <div>
                     <span className="item-text">{item.name}</span>
                     <span className="item-badge">{item.category}</span>
+                    {item.notes && <span className="item-notes">{item.notes}</span>}
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="delete-btn"
-                  onClick={() => dispatch(deleteItem(item.id))}
-                  title="Delete Item"
-                >
-                  <HugeiconsIcon icon={Delete02Icon} />
-                </button>
+
+                <div className="item-right">
+                  <span className="item-qty">x{item.quantity || 1}</span>
+                  <button
+                    type="button"
+                    className="delete-btn"
+                    onClick={() => dispatch(deleteItem(item.id))}
+                    title="Delete Item"
+                  >
+                    <HugeiconsIcon icon={Delete02Icon} size={18} />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         )}
       </main>
 
-      {/* Modal Pop-up */}
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-card">
-            <h3>Add New Item</h3>
-            <form onSubmit={handleAddItem}>
-              <label htmlFor="modal-item-name">Item Name</label>
-              <input
-                id="modal-item-name"
-                type="text"
-                placeholder="e.g. Milk, Apples"
-                value={itemName}
-                onChange={(e) => setItemName(e.target.value)}
-                required
-              />
-
-              <label htmlFor="modal-item-category">Category</label>
-              <input
-                id="modal-item-category"
-                type="text"
-                placeholder="e.g. Produce, Dairy, Bakery"
-                value={itemCategory}
-                onChange={(e) => setItemCategory(e.target.value)}
-              />
-
-              <div className="modal-actions">
-                <button type="button" className="cancel-btn" onClick={() => setIsModalOpen(false)}>
-                  Cancel
-                </button>
-                <button type="submit" className="submit-btn">
-                  Add Item
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* Render AddListModal Component */}
+      <AddListModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddItem={handleAddItem}
+      />
     </div>
   );
 };

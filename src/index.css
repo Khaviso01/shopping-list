@@ -50,6 +50,7 @@ span {
 }
 
 /* Base centering wrapper */
+
 .login-container {
   display: flex;
   justify-content: center;
@@ -316,8 +317,6 @@ span {
   }
 }
 
-
-
 /* Add Item Input */
 .add-item-bar {
   background-color: #ffffff;
@@ -327,13 +326,13 @@ span {
   display: flex;
   align-items: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
 
-.add-item-bar input {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 15px;
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 15px;
+  }
 }
 
 .bar-icons button {
@@ -503,11 +502,20 @@ span {
 }
 
 /* Profile Action Buttons */
+
+.top-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
 .profile-actions {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
-  margin-top: 12px;
 }
 
 .secondary-btn {
@@ -523,10 +531,14 @@ span {
 }
 
 .signout-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
   width: 100%;
   height: 48px;
   background: var(--color-white);
-  color: #ffffff;
+  color: var(--color-primary-dark);
   border: none;
   border-radius: 12px;
   font-size: 15px;
@@ -534,8 +546,9 @@ span {
   cursor: pointer;
 }
 
+
 .signout-btn:hover {
-  background-color: var(--color-primary-dark);
+  color: var(--color-primary);
 }
 
 /* Add Item Trigger Bar */
@@ -590,31 +603,31 @@ span {
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
 
-.modal-card h3 {
-  margin: 0 0 16px;
-  font-size: 18px;
-  color: #2d3748;
-}
+  h3 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    color: #2d3748;
+  }
 
-.modal-card label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: #4a5568;
-  margin-bottom: 6px;
-}
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+  }
 
-.modal-card input {
-  width: 100%;
-  height: 40px;
-  padding: 0 12px;
-  margin-bottom: 16px;
-  border: 1px solid #cbd5e0;
-  border-radius: 8px;
-  font-size: 14px;
-  box-sizing: border-box;
+  input {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    margin-bottom: 16px;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
 }
 
 .modal-actions {
@@ -634,7 +647,7 @@ span {
 }
 
 .submit-btn {
-  background-color: #3b9b9b;
+  background-color: var(--color-primary-dark);
   color: #ffffff;
   border: none;
   padding: 8px 16px;
