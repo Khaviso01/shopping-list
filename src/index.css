@@ -546,6 +546,28 @@ span {
   cursor: pointer;
 }
 
+.item-image-square {
+  width: 48px;
+  height: 48px;
+  background-color: #f7fafc;
+  border-radius: 8px; /* Square with soft rounded corners */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid #edf2f7;
+  flex-shrink: 0;
+}
+
+.item-image-square img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-fallback-icon {
+  color: #a0aec0;
+}
 
 .signout-btn:hover {
   color: var(--color-primary);

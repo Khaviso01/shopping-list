@@ -4,6 +4,9 @@ export interface ShoppingItem {
   id: string;
   name: string;
   category?: string;
+  quantity?: string;
+  notes?: string;
+  imageUrl?: string;
   dateAdded: string;
 }
 
@@ -19,11 +22,23 @@ export const shoppingListSlice = createSlice({
   name: 'shoppingList',
   initialState,
   reducers: {
-    addItem: (state, action: PayloadAction<{ name: string; category?: string }>) => {
+    addItem: (
+      state,
+      action: PayloadAction<{
+        name: string;
+        category?: string;
+        quantity?: string;
+        notes?: string;
+        imageUrl?: string;
+      }>
+    ) => {
       const newItem: ShoppingItem = {
         id: Date.now().toString(),
         name: action.payload.name,
         category: action.payload.category || 'General',
+        quantity: action.payload.quantity || '1',
+        notes: action.payload.notes || '',
+        imageUrl: action.payload.imageUrl || '',
         dateAdded: new Date().toISOString(),
       };
       state.items.unshift(newItem);

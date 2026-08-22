@@ -5,7 +5,7 @@ import type { RootState } from '../redux/store';
 import { addItem, deleteItem, type ShoppingItem } from '../redux/shoppingListSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
-  User02Icon, ShoppingBagRemoveIcon, Delete02Icon
+  User02Icon, ShoppingBagRemoveIcon, Delete02Icon, ShoppingBag01Icon
 } from '@hugeicons/core-free-icons';
 import AddListModal from '../components/AddListModal';
 import '../index.css';
@@ -85,14 +85,18 @@ export const HomePage: React.FC = () => {
             {sortedItems.map((item: any) => (
               <div key={item.id} className="item-card">
                 <div className="item-left">
-                  {/* Circular Product Image Layout */}
-                  <div className="item-image-circle">
+                  {/* Restored Checkbox */}
+                  <input type="checkbox" className="round-checkbox" />
+
+                  {/* Square Product Image Container */}
+                  <div className="item-image-square">
                     {item.imageUrl ? (
                       <img src={item.imageUrl} alt={item.name} />
                     ) : (
-                      <span className="image-fallback">🛒</span>
+                      <HugeiconsIcon icon={ShoppingBag01Icon} size={24} className="image-fallback-icon" />
                     )}
                   </div>
+
                   <div>
                     <span className="item-text">{item.name}</span>
                     <span className="item-badge">{item.category}</span>

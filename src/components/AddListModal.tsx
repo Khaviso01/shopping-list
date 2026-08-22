@@ -1,4 +1,13 @@
 import React, { useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import {
+  Cancel01Icon,
+  Add01Icon,
+  ShoppingBasket01Icon,
+  Image01Icon,
+  PencilEdit02Icon,
+  Tag01Icon
+} from '@hugeicons/core-free-icons';
 
 interface AddListModalProps {
   isOpen: boolean;
@@ -48,19 +57,29 @@ export const AddListModal: React.FC<AddListModalProps> = ({
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-        <h3>Add New Item</h3>
+        <div className="modal-header">
+          <h3>Add New Item</h3>
+          <button type="button" className="close-icon-btn" onClick={onClose}>
+            <HugeiconsIcon icon={Cancel01Icon} size={20} />
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit}>
-          <label htmlFor="modal-item-name">Item Name *</label>
+          <label htmlFor="modal-item-name">
+            <HugeiconsIcon icon={ShoppingBasket01Icon} size={16} /> Item Name *
+          </label>
           <input
             id="modal-item-name"
             type="text"
-            placeholder="e.g. Tomatoes, Bedding"
+            placeholder="e.g. Róisín Beer"
             value={itemName}
             onChange={(e) => setItemName(e.target.value)}
             required
           />
 
-          <label htmlFor="modal-item-category">Category</label>
+          <label htmlFor="modal-item-category">
+            <HugeiconsIcon icon={Tag01Icon} size={16} /> Category
+          </label>
           <input
             id="modal-item-category"
             type="text"
@@ -69,7 +88,7 @@ export const AddListModal: React.FC<AddListModalProps> = ({
             onChange={(e) => setItemCategory(e.target.value)}
           />
 
-          <label htmlFor="modal-item-qty">Quantity</label>
+          <label htmlFor="modal-item-qty">Quantity / Size</label>
           <input
             id="modal-item-qty"
             type="text"
@@ -78,7 +97,9 @@ export const AddListModal: React.FC<AddListModalProps> = ({
             onChange={(e) => setItemQuantity(e.target.value)}
           />
 
-          <label htmlFor="modal-item-notes">Optional Notes</label>
+          <label htmlFor="modal-item-notes">
+            <HugeiconsIcon icon={PencilEdit02Icon} size={16} /> Optional Notes
+          </label>
           <input
             id="modal-item-notes"
             type="text"
@@ -87,7 +108,9 @@ export const AddListModal: React.FC<AddListModalProps> = ({
             onChange={(e) => setItemNotes(e.target.value)}
           />
 
-          <label htmlFor="modal-item-image">Image URL</label>
+          <label htmlFor="modal-item-image">
+            <HugeiconsIcon icon={Image01Icon} size={16} /> Image URL
+          </label>
           <input
             id="modal-item-image"
             type="url"
@@ -98,10 +121,10 @@ export const AddListModal: React.FC<AddListModalProps> = ({
 
           <div className="modal-actions">
             <button type="button" className="cancel-btn" onClick={onClose}>
-              Cancel
+              <HugeiconsIcon icon={Cancel01Icon} size={16} /> Cancel
             </button>
             <button type="submit" className="submit-btn">
-              Add Item
+              <HugeiconsIcon icon={Add01Icon} size={16} /> Add Item
             </button>
           </div>
         </form>
