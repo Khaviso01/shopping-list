@@ -14,8 +14,28 @@ interface ShoppingListState {
   items: ShoppingItem[];
 }
 
+// Load initial items from localStorage
+const loadItemsFromStorage = (): ShoppingItem[] => {
+  try {
+    const saved = localStorage.getItem('shopping_list_items');
+    return saved ? JSON.parse(saved) : [];
+  } catch (error) {
+    console.error('Failed to load shopping list from localStorage:', error);
+    return [];
+  }
+};
+
+// Helper function to update localStorage
+const saveItemsToStorage = (items: ShoppingItem[]) => {
+  try {
+    localStorage.setItem('shopping_list_items', JSON.stringify(items));
+  } catch (error) {
+    console.error('Failed to save shopping list to localStorage:', error);
+  }
+};
+
 const initialState: ShoppingListState = {
-  items: [],
+  items: loadItemsFromStorage(),
 };
 
 export const shoppingListSlice = createSlice({
@@ -42,9 +62,11 @@ export const shoppingListSlice = createSlice({
         dateAdded: new Date().toISOString(),
       };
       state.items.unshift(newItem);
+      saveItemsToStorage(state.items);
     },
     deleteItem: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
+      saveItemsToStorage(state.items);
     },
   },
 });

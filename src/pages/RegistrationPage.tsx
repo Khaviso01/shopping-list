@@ -11,6 +11,7 @@ export const RegistrationPage = () => {
     name: '',
     surname: '',
     email: '',
+    cellNumber: '',
     password: '',
     confirmPassword: '',
   });
@@ -22,11 +23,26 @@ export const RegistrationPage = () => {
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { id, value } = e.target;
+
+    // For cellNumber, allow only numeric digits and max 10 characters
+    if (id === 'cellNumber') {
+      const numericValue = value.replace(/\D/g, '').slice(0, 10);
+      setFormData({ ...formData, cellNumber: numericValue });
+      return;
+    }
+
+    setFormData({ ...formData, [id]: value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate 10-digit cell number length
+    if (formData.cellNumber.length !== 10) {
+      alert('Cell number must be exactly 10 digits!');
+      return;
+    }
 
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords don't match!");
@@ -36,7 +52,6 @@ export const RegistrationPage = () => {
     // Omit confirmPassword from payload before dispatching
     const { confirmPassword, ...userPayload } = formData;
 
-    // authSlice handles encrypting userPayload.password via CryptoJS
     dispatch(registerUser(userPayload));
     navigate('/home');
   };
@@ -72,6 +87,17 @@ export const RegistrationPage = () => {
             id="email"
             value={formData.email}
             onChange={handleChange}
+            required
+          />
+
+          <label htmlFor="cellNumber">Cell Number</label>
+          <input
+            type="tel"
+            id="cellNumber"
+            value={formData.cellNumber}
+            onChange={handleChange}
+            placeholder="e.g. 0821234567"
+            maxLength={10}
             required
           />
 

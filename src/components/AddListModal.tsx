@@ -59,9 +59,6 @@ export const AddListModal: React.FC<AddListModalProps> = ({
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h3>Add New Item</h3>
-          <button type="button" className="close-icon-btn" onClick={onClose}>
-            <HugeiconsIcon icon={Cancel01Icon} size={20} />
-          </button>
         </div>
 
         <form onSubmit={handleSubmit}>
