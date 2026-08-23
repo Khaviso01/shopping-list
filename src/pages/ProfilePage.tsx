@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import type { RootState } from '../redux/store';
 import { updateProfile, logout } from '../redux/authSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
   ArrowLeft02Icon,
-  ArrowRight02Icon,
-  ViewIcon,
-  ViewOffIcon
+  ArrowRight02Icon
 } from '@hugeicons/core-free-icons';
 import '../index.css';
 
@@ -22,42 +21,29 @@ export const ProfilePage: React.FC = () => {
     surname: user?.surname || '',
     email: user?.email || '',
     cellNumber: user?.cellNumber || '',
-    password: '',
-    confirmPassword: '',
   });
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.password && formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
-      return;
+    const toastId = toast.loading('Updating profile...');
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      dispatch(updateProfile(formData));
+      toast.success('Profile updated successfully!', { id: toastId });
+    } catch (error) {
+      toast.error('Failed to update profile.', { id: toastId });
     }
-
-    // Extract confirmPassword and password from formData
-    const { confirmPassword, password, ...restProfileData } = formData;
-
-    // Only include password if the user entered a new value
-    const profilePayload = password.trim()
-      ? { ...restProfileData, password }
-      : restProfileData;
-
-    dispatch(updateProfile(profilePayload));
-    alert('Profile updated successfully!');
-
-    // Reset password inputs
-    setFormData((prev) => ({ ...prev, password: '', confirmPassword: '' }));
   };
 
   const handleLogout = () => {
     dispatch(logout());
+    toast.success('Signed out successfully!');
     navigate('/login');
   };
 
@@ -107,44 +93,6 @@ export const ProfilePage: React.FC = () => {
             onChange={handleChange}
             placeholder="Enter cell number"
           />
-
-          <label htmlFor="password">New Password</label>
-          <div className="password-input-wrapper">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter new password"
-            />
-            <button
-              type="button"
-              className="toggle-password-btn"
-              onClick={() => setShowPassword(!showPassword)}
-              aria-label="Toggle password visibility"
-            >
-              <HugeiconsIcon icon={showPassword ? ViewOffIcon : ViewIcon} size={18} />
-            </button>
-          </div>
-
-          <label htmlFor="confirmPassword">Confirm New Password</label>
-          <div className="password-input-wrapper">
-            <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              id="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Confirm new password"
-            />
-            <button
-              type="button"
-              className="toggle-password-btn"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              aria-label="Toggle confirm password visibility"
-            >
-              <HugeiconsIcon icon={showConfirmPassword ? ViewOffIcon : ViewIcon} size={18} />
-            </button>
-          </div>
 
           <button type="submit">Save Changes</button>
         </form>

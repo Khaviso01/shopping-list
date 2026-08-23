@@ -14,7 +14,6 @@ interface ShoppingListState {
   items: ShoppingItem[];
 }
 
-// Load initial items from localStorage
 const loadItemsFromStorage = (): ShoppingItem[] => {
   try {
     const saved = localStorage.getItem('shopping_list_items');
@@ -25,7 +24,6 @@ const loadItemsFromStorage = (): ShoppingItem[] => {
   }
 };
 
-// Helper function to update localStorage
 const saveItemsToStorage = (items: ShoppingItem[]) => {
   try {
     localStorage.setItem('shopping_list_items', JSON.stringify(items));
@@ -64,6 +62,13 @@ export const shoppingListSlice = createSlice({
       state.items.unshift(newItem);
       saveItemsToStorage(state.items);
     },
+    editItem: (state, action: PayloadAction<ShoppingItem>) => {
+      const index = state.items.findIndex((item) => item.id === action.payload.id);
+      if (index !== -1) {
+        state.items[index] = action.payload;
+        saveItemsToStorage(state.items);
+      }
+    },
     deleteItem: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
       saveItemsToStorage(state.items);
@@ -71,5 +76,5 @@ export const shoppingListSlice = createSlice({
   },
 });
 
-export const { addItem, deleteItem } = shoppingListSlice.actions;
+export const { addItem, editItem, deleteItem } = shoppingListSlice.actions;
 export default shoppingListSlice.reducer;

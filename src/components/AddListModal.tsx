@@ -1,127 +1,75 @@
-import React, { useState } from 'react';
-import { HugeiconsIcon } from '@hugeicons/react';
-import {
-  Cancel01Icon,
-  Add01Icon,
-  ShoppingBasket01Icon,
-  Image01Icon,
-  PencilEdit02Icon,
-  Tag01Icon
-} from '@hugeicons/core-free-icons';
+import React, { useState, useEffect } from 'react';
+import type { ShoppingItem } from '../redux/shoppingListSlice';
 
 interface AddListModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddItem: (item: {
-    name: string;
-    category: string;
-    quantity: string;
-    notes: string;
-    imageUrl: string;
-  }) => void;
+  onSave: (item: { name: string; category?: string; quantity?: string; notes?: string; imageUrl?: string }) => void;
+  initialData?: ShoppingItem | null;
 }
 
 export const AddListModal: React.FC<AddListModalProps> = ({
   isOpen,
   onClose,
-  onAddItem,
+  onSave,
+  initialData,
 }) => {
-  const [itemName, setItemName] = useState('');
-  const [itemCategory, setItemCategory] = useState('General');
-  const [itemQuantity, setItemQuantity] = useState('1');
-  const [itemNotes, setItemNotes] = useState('');
-  const [itemImageUrl, setItemImageUrl] = useState('');
+  const [name, setName] = useState('');
+  const [category, setCategory] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [notes, setNotes] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+
+  useEffect(() => {
+    if (initialData) {
+      setName(initialData.name || '');
+      setCategory(initialData.category || '');
+      setQuantity(initialData.quantity || '1');
+      setNotes(initialData.notes || '');
+      setImageUrl(initialData.imageUrl || '');
+    } else {
+      setName('');
+      setCategory('');
+      setQuantity('');
+      setNotes('');
+      setImageUrl('');
+    }
+  }, [initialData, isOpen]);
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!itemName.trim()) return;
-
-    onAddItem({
-      name: itemName.trim(),
-      category: itemCategory.trim() || 'General',
-      quantity: itemQuantity.trim() || '1',
-      notes: itemNotes.trim(),
-      imageUrl: itemImageUrl.trim(),
-    });
-
-    // Reset form fields
-    setItemName('');
-    setItemCategory('General');
-    setItemQuantity('1');
-    setItemNotes('');
-    setItemImageUrl('');
+    if (!name.trim()) return;
+    onSave({ name, category, quantity, notes, imageUrl });
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h3>Add New Item</h3>
-        </div>
-
+    <div className="modal-overlay">
+      <div className="modal-card">
+        <h3>{initialData ? 'Edit Item' : 'Add New Item'}</h3>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="modal-item-name">
-            <HugeiconsIcon icon={ShoppingBasket01Icon} size={16} /> Item Name *
-          </label>
-          <input
-            id="modal-item-name"
-            type="text"
-            placeholder="e.g. Róisín Beer"
-            value={itemName}
-            onChange={(e) => setItemName(e.target.value)}
-            required
-          />
+          <label>Item Name *</label>
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
 
-          <label htmlFor="modal-item-category">
-            <HugeiconsIcon icon={Tag01Icon} size={16} /> Category
-          </label>
-          <input
-            id="modal-item-category"
-            type="text"
-            placeholder="e.g. Beverages, Produce"
-            value={itemCategory}
-            onChange={(e) => setItemCategory(e.target.value)}
-          />
+          <label>Category</label>
+          <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
 
-          <label htmlFor="modal-item-qty">Quantity / Size</label>
-          <input
-            id="modal-item-qty"
-            type="text"
-            placeholder="e.g. 330ml or 1"
-            value={itemQuantity}
-            onChange={(e) => setItemQuantity(e.target.value)}
-          />
+          <label>Quantity</label>
+          <input type="text" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
 
-          <label htmlFor="modal-item-notes">
-            <HugeiconsIcon icon={PencilEdit02Icon} size={16} /> Optional Notes
-          </label>
-          <input
-            id="modal-item-notes"
-            type="text"
-            placeholder="e.g. Extra cold"
-            value={itemNotes}
-            onChange={(e) => setItemNotes(e.target.value)}
-          />
+          <label>Notes</label>
+          <input type="text" value={notes} onChange={(e) => setNotes(e.target.value)} />
 
-          <label htmlFor="modal-item-image">
-            <HugeiconsIcon icon={Image01Icon} size={16} /> Image URL
-          </label>
-          <input
-            id="modal-item-image"
-            type="url"
-            placeholder="https://example.com/product.png"
-            value={itemImageUrl}
-            onChange={(e) => setItemImageUrl(e.target.value)}
-          />
+          <label>Image URL</label>
+          <input type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
 
           <div className="modal-actions">
             <button type="button" className="cancel-btn" onClick={onClose}>
-              <HugeiconsIcon icon={Cancel01Icon} size={16} /> Cancel
+              Cancel
             </button>
             <button type="submit" className="submit-btn">
-              <HugeiconsIcon icon={Add01Icon} size={16} /> Add Item
+              {initialData ? 'Save Changes' : 'Add Item'}
             </button>
           </div>
         </form>
