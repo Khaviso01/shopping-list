@@ -50,19 +50,19 @@ export const AddListModal: React.FC<AddListModalProps> = ({
         <h3>{initialData ? 'Edit Item' : 'Add New Item'}</h3>
         <form onSubmit={handleSubmit}>
           <label>Item Name *</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input type="text" placeholder="e.g Maize meal" value={name} onChange={(e) => setName(e.target.value)} required />
 
           <label>Category</label>
-          <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
+          <input type="text" placeholder="e.g Starch" value={category} onChange={(e) => setCategory(e.target.value)} />
 
           <label>Quantity</label>
           <input type="text" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
 
           <label>Notes</label>
-          <input type="text" value={notes} onChange={(e) => setNotes(e.target.value)} />
+          <input type="text" placeholder="e.g White maize meal" value={notes} onChange={(e) => setNotes(e.target.value)} />
 
           <label>Image URL</label>
-          <input type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+          <input type="url" placeholder="https://example.com/product.png" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
 
           <div className="modal-actions">
             <button type="button" className="cancel-btn" onClick={onClose}>
