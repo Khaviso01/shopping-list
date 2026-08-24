@@ -2,6 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import * as CryptoJS from 'crypto-js';
 
 const SECRET_KEY = 'shopping-list-secret-key';
+const AUTHENTICATED_KEY = 'shopping-list-authenticated';
 
 export interface User {
   name: string;
@@ -19,7 +20,7 @@ interface AuthState {
 const savedUser = localStorage.getItem('user');
 const initialState: AuthState = {
   user: savedUser ? JSON.parse(savedUser) : null,
-  isAuthenticated: !!savedUser,
+  isAuthenticated: localStorage.getItem(AUTHENTICATED_KEY) === 'true',
 };
 
 export const authSlice = createSlice({
@@ -36,12 +37,14 @@ export const authSlice = createSlice({
       state.user = userData;
       state.isAuthenticated = true;
       localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem(AUTHENTICATED_KEY, 'true');
     },
     loginUser: (state, action: PayloadAction<{ email: string }>) => {
       const userData = { ...state.user, ...action.payload } as User;
       state.user = userData;
       state.isAuthenticated = true;
       localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem(AUTHENTICATED_KEY, 'true');
     },
     updateProfile: (state, action: PayloadAction<Partial<User>>) => {
       let updatedData = { ...action.payload };
@@ -62,9 +65,8 @@ export const authSlice = createSlice({
       localStorage.setItem('user', JSON.stringify(updatedUser));
     },
     logout: (state) => {
-      state.user = null;
       state.isAuthenticated = false;
-      localStorage.removeItem('user');
+      localStorage.setItem(AUTHENTICATED_KEY, 'false');
     },
   },
 });

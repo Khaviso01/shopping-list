@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
 
 :root {
   --color-white: #ffffff;
@@ -14,6 +16,7 @@
 
   --font-display: 'Geist', sans-serif;
   --secondary-font-display: 'Lobster', cursive;
+  --tertiary-font-display: 'DM Serif Display', serif;
   --font-body: 'Geist', sans-serif;
 
   --radius-md: 9px;
@@ -67,6 +70,7 @@ button {
 
 /* Headings & Subtitles */
 .login-content h2 {
+  font-family: var(--tertiary-font-display);
   font-size: 32px;
   font-weight: 700;
   color: #1a1a1a;
@@ -175,6 +179,7 @@ button {
 
 /* Headings & Subtitles */
 .login-content h2 {
+  font-family: var(--tertiary-font-display);
   font-size: 32px;
   font-weight: 700;
   color: #1a1a1a;

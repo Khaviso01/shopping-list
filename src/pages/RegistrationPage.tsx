@@ -67,6 +67,7 @@ export const RegistrationPage = () => {
           <input
             type="text"
             id="name"
+            placeholder="Enter your name"
             value={formData.name}
             onChange={handleChange}
             required
@@ -76,6 +77,7 @@ export const RegistrationPage = () => {
           <input
             type="text"
             id="surname"
+            placeholder="Enter your surname"
             value={formData.surname}
             onChange={handleChange}
             required
