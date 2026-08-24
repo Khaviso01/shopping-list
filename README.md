@@ -2,6 +2,10 @@
 
 Listly is a lightweight shopping-list web application built with React and TypeScript. It lets users create a local profile, manage shopping items, search and sort their list, and update their profile details from a simple responsive interface. The application currently runs entirely in the browser. User details and shopping-list items are stored in `localStorage`.
 
+# Preview
+
+<img src="assets/shopping-list-ui.png" alt="Alt text" width="700">
+
 ## Features
 
 - Create an account with a name, surname, email address, cell number, and password.
