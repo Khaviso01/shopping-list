@@ -4,7 +4,7 @@ Listly is a lightweight shopping-list web application built with React and TypeS
 
 # Preview
 
-<img src="assets/shopping-list-ui.png" alt="Alt text" width="700">
+<img src="src/assets/shopping-list-ui.png" alt="Alt text" width="500">
 
 ## Features
 
