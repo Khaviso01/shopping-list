@@ -7,7 +7,7 @@ import { updateProfile, logout } from '../redux/authSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
   ArrowLeft02Icon,
-  ArrowRight02Icon
+  Logout05Icon
 } from '@hugeicons/core-free-icons';
 import '../index.css';
 
@@ -99,7 +99,7 @@ export const ProfilePage: React.FC = () => {
 
         <div className="profile-actions">
           <button type="button" className="signout-btn" onClick={handleLogout}>
-            Sign Out <HugeiconsIcon icon={ArrowRight02Icon} size={18} />
+            <HugeiconsIcon icon={Logout05Icon} size={18} /> Sign Out
           </button>
         </div>
       </div>
