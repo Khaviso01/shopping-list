@@ -87,6 +87,7 @@ export const RegistrationPage = () => {
           <input
             type="email"
             id="email"
+            placeholder="name@example.com"
             value={formData.email}
             onChange={handleChange}
             required
@@ -108,6 +109,7 @@ export const RegistrationPage = () => {
             <input
               type={showPassword ? 'text' : 'password'}
               id="password"
+              placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
               required
@@ -127,6 +129,7 @@ export const RegistrationPage = () => {
             <input
               type={showConfirmPassword ? 'text' : 'password'}
               id="confirmPassword"
+              placeholder="Repeat password"
               value={formData.confirmPassword}
               onChange={handleChange}
               required

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { User02Icon } from '@hugeicons/core-free-icons';
+import { User02Icon, ShopifyIcon } from '@hugeicons/core-free-icons';
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -10,7 +10,8 @@ export const Header: React.FC = () => {
     <header className="header">
       <div className="header-title-row">
         <button className="title" onClick={() => navigate('/home')}>
-          Listly
+          <HugeiconsIcon icon={ShopifyIcon} />
+          ShopBuddy
         </button>
         <div className="header-actions">
           <button
