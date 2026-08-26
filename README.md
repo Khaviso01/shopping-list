@@ -4,7 +4,7 @@ ShopBuddy is a lightweight shopping-list web application built with React and Ty
 
 # Preview
 
-<img src="src/assets/shopping-list-ui.png" alt="Alt text" width="500">
+<img src="src/assets/shopbuddy.png" alt="Alt text" width="500">
 
 ## Features
 
