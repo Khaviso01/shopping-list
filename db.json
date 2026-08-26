@@ -1,4 +1,14 @@
 {
-  "users": [],
-  "items": []
+  "users": [
+    {
+      "name": "Khaviso",
+      "surname": "Vukeya",
+      "email": "khavisovukeya3@gmail.com",
+      "cellNumber": "0679933441",
+      "passwordHash": "$2b$10$qjN74ItiWKcRNj7nX0lkzOYXt0VFaj1XjGib0/9K1oaYJ6hipZvTu",
+      "id": "Nfb8eCtjg88"
+    }
+  ],
+  "items": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }

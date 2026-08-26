@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import toast from 'react-hot-toast';
+import type { AppDispatch } from '../redux/store';
 import { registerUser } from '../redux/authSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons';
@@ -18,8 +20,9 @@ export const RegistrationPage = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,25 +38,37 @@ export const RegistrationPage = () => {
     setFormData({ ...formData, [id]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate 10-digit cell number length
     if (formData.cellNumber.length !== 10) {
-      alert('Cell number must be exactly 10 digits!');
+      toast.error('Cell number must be exactly 10 digits!');
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
+      toast.error("Passwords don't match!");
       return;
     }
 
-    // Omit confirmPassword from payload before dispatching
-    const { confirmPassword, ...userPayload } = formData;
+    setIsSubmitting(true);
+    const toastId = toast.loading('Creating your account...');
 
-    dispatch(registerUser(userPayload));
-    navigate('/home');
+    // Omit confirmPassword from payload before dispatching
+    const { confirmPassword: _confirmPassword, ...userPayload } = formData;
+
+    // registerUser hashes the password with bcrypt before it is ever sent
+    // to the server — the plain-text password never touches storage.
+    const result = await dispatch(registerUser(userPayload));
+
+    if (registerUser.fulfilled.match(result)) {
+      toast.success(`Welcome, ${result.payload.name}!`, { id: toastId });
+      navigate('/home');
+    } else {
+      toast.error((result.payload as string) || 'Registration failed.', { id: toastId });
+    }
+    setIsSubmitting(false);
   };
 
   return (
@@ -144,7 +159,9 @@ export const RegistrationPage = () => {
             </button>
           </div>
 
-          <button type="submit">Create account</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Creating account...' : 'Create account'}
+          </button>
           <p>
             Already have an account? <Link to="/login">Sign in</Link>
           </p>

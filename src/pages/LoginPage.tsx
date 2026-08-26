@@ -1,52 +1,40 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import * as CryptoJS from 'crypto-js';
-import type { RootState } from '../redux/store';
+import { useDispatch } from 'react-redux';
+import toast from 'react-hot-toast';
+import type { AppDispatch } from '../redux/store';
 import { loginUser } from '../redux/authSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons';
 import '../index.css';
 
-const SECRET_KEY = 'shopping-list-secret-key';
-
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  // Retrieve saved user data from Redux state (or local storage fallback)
-  const user = useSelector((state: RootState) => state.auth.user);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!email || !password) return;
 
-    // Check if user account exists
-    if (!user || user.email.toLowerCase() !== email.toLowerCase()) {
-      alert('No account found with this email address.');
-      return;
-    }
+    setIsSubmitting(true);
+    const toastId = toast.loading('Signing in...');
 
-    // Decrypt the stored encrypted password
-    try {
-      const bytes = CryptoJS.AES.decrypt(user.password || '', SECRET_KEY);
-      const decryptedPassword = bytes.toString(CryptoJS.enc.Utf8);
+    // loginUser fetches the stored password hash from json-server and
+    // verifies it with bcrypt.compare — the hash is never decrypted.
+    const result = await dispatch(loginUser({ email, password }));
 
-      if (password !== decryptedPassword) {
-        alert('Incorrect password. Please try again.');
-        return;
-      }
-
-      dispatch(loginUser({ email }));
+    if (loginUser.fulfilled.match(result)) {
+      toast.success(`Welcome back, ${result.payload.name}!`, { id: toastId });
       navigate('/home');
-    } catch (error) {
-      alert('Error verifying credentials.');
+    } else {
+      toast.error((result.payload as string) || 'Login failed.', { id: toastId });
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -86,7 +74,9 @@ export function LoginPage() {
             </button>
           </div>
 
-          <button type="submit">Sign in</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Signing in...' : 'Sign in'}
+          </button>
           <p>
             New here? <Link to="/register">Create an account</Link>
           </p>

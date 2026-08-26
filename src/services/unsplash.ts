@@ -44,7 +44,26 @@ export const searchUnsplashImages = async (
   });
 
   if (!response.ok) {
-    throw new Error(`Unsplash search failed with status ${response.status}`);
+    // Read the response body for diagnostics — Unsplash includes helpful
+    // detail here (e.g. "Invalid access token"), logged for debugging but
+    // not shown verbatim to the user.
+    const body = await response.text().catch(() => '');
+    if (body) console.error('Unsplash search error response:', body);
+
+    if (response.status === 401) {
+      throw new Error(
+        'Unsplash rejected the access key (401). Double-check VITE_UNSPLASH_ACCESS_KEY in .env is your Access Key, not your Secret Key, then restart the dev server.'
+      );
+    }
+    if (response.status === 403) {
+      throw new Error(
+        'Unsplash blocked this request (403) — likely the demo-app hourly rate limit (50 requests/hour) has been hit. Wait an hour, or apply for production access on your Unsplash app.'
+      );
+    }
+    if (response.status === 404) {
+      throw new Error('Unsplash search endpoint not found (404) — check the app is calling api.unsplash.com correctly.');
+    }
+    throw new Error(`Unsplash search failed with status ${response.status}.`);
   }
 
   const data = await response.json();

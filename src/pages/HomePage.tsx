@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import type { RootState } from '../redux/store';
-import { addItem, editItem, deleteItem, type ShoppingItem } from '../redux/shoppingListSlice';
+import type { AppDispatch, RootState } from '../redux/store';
+import {
+  fetchItems,
+  addItem,
+  editItem,
+  deleteItem,
+  type ShoppingItem,
+  type NewShoppingItemInput,
+} from '../redux/shoppingListSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
   ShoppingBagRemoveIcon,
   Delete02Icon,
   ShoppingBag01Icon,
-  PencilEdit02Icon
+  PencilEdit02Icon,
+  Share08Icon,
 } from '@hugeicons/core-free-icons';
 import Header from '../components/Header';
 import Searchbar from '../components/Searchbar';
@@ -23,11 +31,21 @@ export const HomePage: React.FC = () => {
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
+  const user = useSelector((state: RootState) => state.auth.user);
   const items = useSelector((state: RootState) => state.shoppingList.items);
+  const listStatus = useSelector((state: RootState) => state.shoppingList.status);
   const searchQuery = searchParams.get('search') || '';
   const sortBy = searchParams.get('sort') || 'name';
+
+  // Load this user's shopping list from the json-server backend whenever
+  // the signed-in user changes (e.g. after login).
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchItems(user.id));
+    }
+  }, [dispatch, user]);
 
   const handleOpenAddModal = () => {
     setEditingItem(null);
@@ -39,48 +57,41 @@ export const HomePage: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  // Simulates background operation with toast feedback
-  const handleSaveItem = async (itemData: { name: string; category?: string; quantity?: string; notes?: string; imageUrl?: string }) => {
+  const handleSaveItem = async (itemData: NewShoppingItemInput) => {
+    if (!user) return;
     const isEditing = Boolean(editingItem);
-    
-    // Show background loading indicator
     const toastId = toast.loading(isEditing ? 'Updating item...' : 'Saving new item...');
 
-    try {
-      // Simulate brief async delay for background processing
-      await new Promise((resolve) => setTimeout(resolve, 500));
+    const action = editingItem
+      ? await dispatch(editItem({ ...editingItem, ...itemData }))
+      : await dispatch(addItem({ userId: user.id, item: itemData }));
 
-      if (editingItem) {
-        dispatch(editItem({ ...editingItem, ...itemData }));
-        toast.success(`"${itemData.name}" updated successfully!`, { id: toastId });
-      } else {
-        dispatch(addItem(itemData as any));
-        toast.success(`"${itemData.name}" added to list!`, { id: toastId });
-      }
-
+    if (action.meta.requestStatus === 'fulfilled') {
+      toast.success(
+        isEditing ? `"${itemData.name}" updated successfully!` : `"${itemData.name}" added to list!`,
+        { id: toastId }
+      );
       setIsModalOpen(false);
       setEditingItem(null);
-    } catch (error) {
-      toast.error('Failed to save item. Please try again.', { id: toastId });
+    } else {
+      toast.error((action.payload as string) || 'Failed to save item. Please try again.', { id: toastId });
     }
   };
 
-  // Confirm delete with background loading feedback
   const handleConfirmDelete = async () => {
     if (!deletingItemId) return;
 
     const itemToDelete = items.find((item) => item.id === deletingItemId);
     const toastId = toast.loading('Deleting item...');
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      dispatch(deleteItem(deletingItemId));
+    const action = await dispatch(deleteItem(deletingItemId));
+
+    if (action.meta.requestStatus === 'fulfilled') {
       toast.success(`"${itemToDelete?.name || 'Item'}" removed from list!`, { id: toastId });
-    } catch (error) {
-      toast.error('Failed to delete item.', { id: toastId });
-    } finally {
-      setDeletingItemId(null);
+    } else {
+      toast.error((action.payload as string) || 'Failed to delete item.', { id: toastId });
     }
+    setDeletingItemId(null);
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -90,8 +101,35 @@ export const HomePage: React.FC = () => {
     toast.success(`Sorted by ${e.target.value}`);
   };
 
+  // Shares the current list view (including any active search/sort filters,
+  // which already live in the URL) so someone else can open the same view.
+  const handleShare = async () => {
+    const shareUrl = window.location.href;
+    const shareData = {
+      title: `${user?.name ?? 'My'}'s shopping list — ShopBuddy`,
+      text: 'Take a look at my shopping list on ShopBuddy!',
+      url: shareUrl,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch {
+        // User cancelled the native share sheet — nothing to do.
+      }
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success('Link copied! Share it with anyone.');
+    } catch {
+      toast.error('Could not copy the link. Copy it manually from the address bar.');
+    }
+  };
+
   const filteredAndSortedItems = items
-    .filter((item: ShoppingItem) => 
+    .filter((item: ShoppingItem) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase().trim())
     )
     .sort((a: ShoppingItem, b: ShoppingItem) => {
@@ -111,6 +149,9 @@ export const HomePage: React.FC = () => {
       <div className="app-container">
         <div className="search-and-actions-bar">
           <Searchbar />
+          <button type="button" className="share-list-btn" onClick={handleShare} title="Share this list">
+            <HugeiconsIcon icon={Share08Icon} size={18} />
+          </button>
           <button type="button" className="open-modal-btn" onClick={handleOpenAddModal}>
             + Add New Item
           </button>
@@ -128,7 +169,11 @@ export const HomePage: React.FC = () => {
         )}
 
         <main className="content-body">
-          {filteredAndSortedItems.length === 0 ? (
+          {listStatus === 'loading' && items.length === 0 ? (
+            <div className="empty-state">
+              <p>Loading your shopping list...</p>
+            </div>
+          ) : filteredAndSortedItems.length === 0 ? (
             <div className="empty-state">
               <div className="cart-icon">
                 <HugeiconsIcon icon={ShoppingBagRemoveIcon} size={82} />
@@ -143,9 +188,9 @@ export const HomePage: React.FC = () => {
               {filteredAndSortedItems.map((item: ShoppingItem) => (
                 <div key={item.id} className="item-card">
                   <div className="item-left">
-                    <input 
-                      type="checkbox" 
-                      className="round-checkbox" 
+                    <input
+                      type="checkbox"
+                      className="round-checkbox"
                       onChange={(e) => {
                         if (e.target.checked) {
                           toast.success(`Completed "${item.name}"`);
