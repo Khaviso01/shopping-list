@@ -1,14 +1,37 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
-import type { RootState } from './redux/store';
+import type { AppDispatch, RootState } from './redux/store';
+import { resumeSession } from './redux/authSlice';
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector((state: RootState) => state.auth?.isAuthenticated);
+  const sessionStatus = useSelector((state: RootState) => state.auth?.sessionStatus);
+
+  // On load, try to resume a previous session by re-fetching the profile
+  // from the json-server backend using the saved user id (no credentials
+  // are ever kept in the browser).
+  useEffect(() => {
+    dispatch(resumeSession());
+  }, [dispatch]);
+
+  // While we're still verifying a saved session against the server (e.g.
+  // right after a page refresh), hold off on rendering any route — this is
+  // what stops a logged-in user from being bounced to /login for a split
+  // second before resumeSession finishes.
+  if (sessionStatus === 'checking') {
+    return (
+      <div className="session-loading-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <BrowserRouter>

@@ -28,6 +28,12 @@ interface AuthState {
   isAuthenticated: boolean;
   status: 'idle' | 'loading' | 'failed';
   error: string | null;
+  // Tracks whether we've finished checking for a saved session on page
+  // load/refresh. Routing waits for this to become 'resolved' before
+  // deciding to redirect to /login — otherwise a refresh briefly reads
+  // isAuthenticated as false (before resumeSession finishes) and bounces
+  // a logged-in user out to the login page.
+  sessionStatus: 'checking' | 'resolved';
 }
 
 const toPublicUser = (apiUser: ApiUser): User => ({
@@ -46,6 +52,11 @@ const initialState: AuthState = {
   isAuthenticated: false,
   status: 'idle',
   error: null,
+  // If there's a saved session id, we need to verify it against the server
+  // before we know whether the user is really authenticated — start in
+  // 'checking' so routing waits. If there's nothing saved, there's nothing
+  // to check, so we can resolve immediately.
+  sessionStatus: localStorage.getItem(SESSION_KEY) ? 'checking' : 'resolved',
 };
 
 // ----- Thunks -----
@@ -155,6 +166,7 @@ export const authSlice = createSlice({
         state.status = 'idle';
         state.user = action.payload;
         state.isAuthenticated = true;
+        state.sessionStatus = 'resolved';
         localStorage.setItem(SESSION_KEY, action.payload.id);
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -169,6 +181,7 @@ export const authSlice = createSlice({
         state.status = 'idle';
         state.user = action.payload;
         state.isAuthenticated = true;
+        state.sessionStatus = 'resolved';
         localStorage.setItem(SESSION_KEY, action.payload.id);
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -178,9 +191,11 @@ export const authSlice = createSlice({
       .addCase(resumeSession.fulfilled, (state, action: PayloadAction<User>) => {
         state.user = action.payload;
         state.isAuthenticated = true;
+        state.sessionStatus = 'resolved';
       })
       .addCase(resumeSession.rejected, (state) => {
         state.isAuthenticated = false;
+        state.sessionStatus = 'resolved';
         localStorage.removeItem(SESSION_KEY);
       })
       .addCase(updateProfile.fulfilled, (state, action: PayloadAction<User>) => {

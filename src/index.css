@@ -60,6 +60,15 @@ button {
   box-sizing: border-box;
 }
 
+.session-loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #718096;
+  font-size: 14px;
+}
+
 /* Form content card wrapper */
 .login-content {
   width: 100%;
