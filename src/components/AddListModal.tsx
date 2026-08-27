@@ -117,7 +117,7 @@ export const AddListModal: React.FC<AddListModalProps> = ({
           <label>Quantity *</label>
           <input type="text" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
 
-          <label>Notes</label>
+          <label>Optional Notes</label>
           <input type="text" placeholder="e.g White maize meal" value={notes} onChange={(e) => setNotes(e.target.value)} />
 
           <label>Item Image *</label>

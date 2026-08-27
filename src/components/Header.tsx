@@ -17,10 +17,11 @@ export const Header: React.FC = () => {
           <button
             type="button"
             className="icon-btn"
+            title="Profile" 
             aria-label="Profile"
             onClick={() => navigate('/profile')}
           >
-            <HugeiconsIcon icon={User02Icon} size={24} />
+            <HugeiconsIcon icon={User02Icon} size={28} />
           </button>
         </div>
       </div>
