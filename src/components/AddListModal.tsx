@@ -111,16 +111,16 @@ export const AddListModal: React.FC<AddListModalProps> = ({
           <label>Item Name *</label>
           <input type="text" placeholder="e.g Maize meal" value={name} onChange={(e) => setName(e.target.value)} required />
 
-          <label>Category</label>
+          <label>Category *</label>
           <input type="text" placeholder="e.g Starch" value={category} onChange={(e) => setCategory(e.target.value)} />
 
-          <label>Quantity</label>
+          <label>Quantity *</label>
           <input type="text" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
 
           <label>Notes</label>
           <input type="text" placeholder="e.g White maize meal" value={notes} onChange={(e) => setNotes(e.target.value)} />
 
-          <label>Item Photo</label>
+          <label>Item Image *</label>
           <div className="image-picker">
             {imageUrl && (
               <div className="image-picker-preview">
