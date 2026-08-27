@@ -181,7 +181,7 @@ export const HomePage: React.FC = () => {
               <h3>
                 {searchQuery ? `No items found matching "${searchQuery}"` : 'Your shopping list is empty!'}
               </h3>
-              <p>{searchQuery ? 'Try searching for something else' : 'Start adding items to your list'}</p>
+              <p>{searchQuery ? 'Try searching for something else' : 'Looks like you have not started with your shopping list.'}</p>
             </div>
           ) : (
             <div className="item-list">
