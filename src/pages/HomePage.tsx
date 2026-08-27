@@ -13,7 +13,6 @@ import {
 } from '../redux/shoppingListSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
-  ShoppingBagRemoveIcon,
   Delete02Icon,
   ShoppingBag01Icon,
   PencilEdit02Icon,
@@ -23,6 +22,7 @@ import Header from '../components/Header';
 import Searchbar from '../components/Searchbar';
 import AddListModal from '../components/AddListModal';
 import ConfirmModal from '../components/ConfirmModal';
+import emptyCartImage from '../assets/empty-cart-cartoon.png';
 import '../index.css';
 
 export const HomePage: React.FC = () => {
@@ -176,7 +176,7 @@ export const HomePage: React.FC = () => {
           ) : filteredAndSortedItems.length === 0 ? (
             <div className="empty-state">
               <div className="cart-icon">
-                <HugeiconsIcon icon={ShoppingBagRemoveIcon} size={82} />
+                <img src={emptyCartImage} alt="Empty shopping cart" />
               </div>
               <h3>
                 {searchQuery ? `No items found matching "${searchQuery}"` : 'Your shopping list is empty!'}
