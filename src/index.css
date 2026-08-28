@@ -276,6 +276,20 @@ button {
   text-decoration: underline;
 }
 
+/* Inline "field is required" validation */
+.signup-form input.input-error {
+  border-color: var(--color-error);
+}
+
+.field-error {
+  display: block;
+  color: var(--color-error);
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: -14px;
+  margin-bottom: 14px;
+}
+
 /* Full-bleed Root Viewport */
 .app-viewport {
   width: 100%;
@@ -340,6 +354,69 @@ button {
   border-radius: 6px;
   background: var(--color-white);
   border: 1px solid #cbd5e0;
+}
+
+/* Progress summary: "X of Y items completed" */
+.progress-summary {
+  padding: 4px 16px 12px;
+}
+
+.progress-summary-text {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 6px;
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background-color: #e2e8f0;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  transition: width 0.25s ease;
+}
+
+/* Completed item — subtle strikethrough + dimming, checkbox stays fully visible */
+.item-completed .item-text,
+.item-completed .item-badge,
+.item-completed .item-notes {
+  text-decoration: line-through;
+  color: #a0aec0;
+}
+
+.item-completed .item-image-square {
+  opacity: 0.5;
+}
+
+.content-body {
+  flex: 1;
+  padding: 0 16px 80px;
+}
+
+@media (min-width: 480px) {
+  .search-and-actions-bar {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .header-title-row,
+  .search-and-actions-bar,
+  .sort-bar,
+  .progress-summary,
+  .content-body {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 
 .content-body {
@@ -605,7 +682,7 @@ p {
   height: 20px;
   border-radius: 50%;
   cursor: pointer;
-  accent-color: #3b9b9b;
+  accent-color: var(--color-primary);
 }
 
 .item-text {
@@ -798,10 +875,10 @@ p {
 /* Responsive Search & Action Bar Wrapper */
 .search-and-actions-bar {
   display: flex;
-  flex-direction: column; /* Stacked by default for mobile (320px) */
+  flex-direction: column; 
   gap: 12px;
   width: 100%;
-  max-width: 1200px; /* Aligns with max breakpoint */
+  max-width: 1200px;
   padding: 16px 16px 0;
   margin: 0 auto;
 }
@@ -816,7 +893,7 @@ p {
 
 .search-input {
   width: 100%;
-  height: 44px; /* Fixed touch-friendly height */
+  height: 44px; 
   padding: 0 36px 0 40px;
   font-size: 0.95rem;
   border: 1px solid #d1d1d6;
@@ -828,7 +905,7 @@ p {
 
 /* Button default for mobile */
 .open-modal-btn {
-  width: 100%; /* Full width on mobile touchscreens */
+  width: 100%;
   height: 44px;
   padding: 0 16px;
   margin: 0;

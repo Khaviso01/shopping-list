@@ -13,6 +13,7 @@ import {
 } from '../redux/shoppingListSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
+  ShoppingBagRemoveIcon,
   Delete02Icon,
   ShoppingBag01Icon,
   PencilEdit02Icon,
@@ -22,13 +23,16 @@ import Header from '../components/Header';
 import Searchbar from '../components/Searchbar';
 import AddListModal from '../components/AddListModal';
 import ConfirmModal from '../components/ConfirmModal';
-import emptyCartImage from '../assets/empty-cart-cartoon.png';
 import '../index.css';
 
 export const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ShoppingItem | null>(null);
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
+  // Tracks which items are ticked as "completed" in this browsing session.
+  // Not persisted to the backend — a refresh clears it, same as the rest
+  // of the app's completion-checkbox behavior.
+  const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
 
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
@@ -128,11 +132,32 @@ export const HomePage: React.FC = () => {
     }
   };
 
+  const handleToggleComplete = (item: ShoppingItem, isChecked: boolean) => {
+  // The toast is a side effect, so it must NOT live inside the
+  // setCompletedIds updater function below — React (in Strict Mode /
+  // development) calls updater functions twice to verify they're pure,
+  // which was firing this toast twice per click.
+  setCompletedIds((prev) => {
+    const next = new Set(prev);
+    if (isChecked) {
+      next.add(item.id);
+    } else {
+      next.delete(item.id);
+    }
+    return next;
+  });
+
+  if (isChecked) {
+    toast.success(`Completed "${item.name}"`);
+  }
+};
+
   const filteredAndSortedItems = items
     .filter((item: ShoppingItem) => {
       const query = searchQuery.toLowerCase().trim();
       if (!query) return true;
       // Matches on name OR category — an item shows up if either field
+      // contains the search text, not just the name.
       const nameMatch = item.name.toLowerCase().includes(query);
       const categoryMatch = (item.category || '').toLowerCase().includes(query);
       return nameMatch || categoryMatch;
@@ -147,6 +172,11 @@ export const HomePage: React.FC = () => {
       return a.name.localeCompare(b.name);
     });
 
+  // Only count items that still exist — if a completed item gets deleted,
+  // its stale id in completedIds is simply never matched here.
+  const completedCount = items.filter((item) => completedIds.has(item.id)).length;
+  const totalCount = items.length;
+
   return (
     <div className="app-viewport">
       <Header />
@@ -154,11 +184,11 @@ export const HomePage: React.FC = () => {
       <div className="app-container">
         <div className="search-and-actions-bar">
           <Searchbar />
+          <button type="button" className="share-list-btn" onClick={handleShare} title="Share this list">
+            <HugeiconsIcon icon={Share08Icon} size={18} />
+          </button>
           <button type="button" className="open-modal-btn" onClick={handleOpenAddModal}>
             + Add New Item
-          </button>
-          <button type="button" className="share-list-btn" title="Share your shopping list" aria-label="Share your shopping list" onClick={handleShare}>
-            <HugeiconsIcon icon={Share08Icon} size={18} />
           </button>
         </div>
 
@@ -173,6 +203,20 @@ export const HomePage: React.FC = () => {
           </div>
         )}
 
+        {totalCount > 0 && (
+          <div className="progress-summary">
+            <span className="progress-summary-text">
+              {completedCount} of {totalCount} items completed
+            </span>
+            <div className="progress-bar-track">
+              <div
+                className="progress-bar-fill"
+                style={{ width: `${totalCount ? (completedCount / totalCount) * 100 : 0}%` }}
+              />
+            </div>
+          </div>
+        )}
+
         <main className="content-body">
           {listStatus === 'loading' && items.length === 0 ? (
             <div className="empty-state">
@@ -181,27 +225,25 @@ export const HomePage: React.FC = () => {
           ) : filteredAndSortedItems.length === 0 ? (
             <div className="empty-state">
               <div className="cart-icon">
-                <img src={emptyCartImage} alt="Empty shopping cart" />
+                <HugeiconsIcon icon={ShoppingBagRemoveIcon} size={82} />
               </div>
               <h3>
                 {searchQuery ? `No items found matching "${searchQuery}"` : 'Your shopping list is empty!'}
               </h3>
-              <p>{searchQuery ? 'Try searching for something else' : 'Looks like you have not started with your shopping list.'}</p>
+              <p>{searchQuery ? 'Try searching for something else' : 'Start adding items to your list'}</p>
             </div>
-            
           ) : (
             <div className="item-list">
-              {filteredAndSortedItems.map((item: ShoppingItem) => (
-                <div key={item.id} className="item-card">
+              {filteredAndSortedItems.map((item: ShoppingItem) => {
+                const isCompleted = completedIds.has(item.id);
+                return (
+                <div key={item.id} className={`item-card ${isCompleted ? 'item-completed' : ''}`}>
                   <div className="item-left">
                     <input
                       type="checkbox"
                       className="round-checkbox"
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          toast.success(`Completed "${item.name}"`);
-                        }
-                      }}
+                      checked={isCompleted}
+                      onChange={(e) => handleToggleComplete(item, e.target.checked)}
                     />
 
                     <div className="item-image-square">
@@ -220,7 +262,7 @@ export const HomePage: React.FC = () => {
                   </div>
 
                   <div className="item-right">
-                    <span className="item-qty">qty: {item.quantity || 1}</span>
+                    <span className="item-qty">x{item.quantity || 1}</span>
                     <button
                       type="button"
                       className="edit-btn"
@@ -239,12 +281,12 @@ export const HomePage: React.FC = () => {
                     </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </main>
       </div>
-      
 
       <AddListModal
         isOpen={isModalOpen}
