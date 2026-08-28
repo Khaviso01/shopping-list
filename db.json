@@ -9,5 +9,6 @@
       "id": "Nfb8eCtjg88"
     }
   ],
-  "items": []
+  "items": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }

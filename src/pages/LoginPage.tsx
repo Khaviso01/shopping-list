@@ -40,8 +40,8 @@ export function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-content">
-        <h2>Welcome back</h2>
-        <p>Sign in to pick up your shopping lists right where you left them.</p>
+        <h2>Log In</h2>
+        <p>Sign in to pick up your shopping list right where you left it.</p>
 
         <form className="login-form" onSubmit={handleSubmit}>
           <label htmlFor="email">Email address</label>

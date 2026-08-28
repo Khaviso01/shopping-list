@@ -75,7 +75,7 @@ export const RegistrationPage = () => {
     <div className="login-container">
       <div className="login-content">
         <h2>Create a profile</h2>
-        <p>It only takes a minute.</p>
+        <p>It only takes a minute to get started with your shopping list.</p>
 
         <form className="signup-form" onSubmit={handleSubmit}>
           <label htmlFor="name">Name</label>

@@ -1,6 +1,4 @@
 // Cross-platform launcher for json-server.
-//
-// We can't rely on `--port $PORT` in the npm script itself: that syntax is
 import { spawn } from 'node:child_process';
 import path from 'node:path';
 

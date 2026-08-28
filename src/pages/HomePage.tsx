@@ -129,9 +129,14 @@ export const HomePage: React.FC = () => {
   };
 
   const filteredAndSortedItems = items
-    .filter((item: ShoppingItem) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase().trim())
-    )
+    .filter((item: ShoppingItem) => {
+      const query = searchQuery.toLowerCase().trim();
+      if (!query) return true;
+      // Matches on name OR category — an item shows up if either field
+      const nameMatch = item.name.toLowerCase().includes(query);
+      const categoryMatch = (item.category || '').toLowerCase().includes(query);
+      return nameMatch || categoryMatch;
+    })
     .sort((a: ShoppingItem, b: ShoppingItem) => {
       if (sortBy === 'category') {
         return (a.category || '').localeCompare(b.category || '');
@@ -183,6 +188,7 @@ export const HomePage: React.FC = () => {
               </h3>
               <p>{searchQuery ? 'Try searching for something else' : 'Looks like you have not started with your shopping list.'}</p>
             </div>
+            
           ) : (
             <div className="item-list">
               {filteredAndSortedItems.map((item: ShoppingItem) => (
@@ -214,7 +220,7 @@ export const HomePage: React.FC = () => {
                   </div>
 
                   <div className="item-right">
-                    <span className="item-qty">x{item.quantity || 1}</span>
+                    <span className="item-qty">qty: {item.quantity || 1}</span>
                     <button
                       type="button"
                       className="edit-btn"
@@ -238,6 +244,7 @@ export const HomePage: React.FC = () => {
           )}
         </main>
       </div>
+      
 
       <AddListModal
         isOpen={isModalOpen}

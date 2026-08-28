@@ -32,7 +32,7 @@ export const Searchbar: React.FC = () => {
       <input
         type="text"
         className="search-input"
-        placeholder="Search items by name..."
+        placeholder="Search list by name or gategory"
         value={searchQuery}
         onChange={handleSearchChange}
       />

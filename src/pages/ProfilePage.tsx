@@ -75,7 +75,7 @@ export const ProfilePage: React.FC = () => {
           <HugeiconsIcon icon={ArrowLeft02Icon} size={18} /> Home
         </Link>
 
-        <h2>Profile Details</h2>
+        <h2>Profile</h2>
         <p>Update your personal information below.</p>
 
         <form className="signup-form" onSubmit={handleSave}>
