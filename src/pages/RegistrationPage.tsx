@@ -39,13 +39,20 @@ export const RegistrationPage = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    // Validate 10-digit cell number length
-    if (formData.cellNumber.length !== 10) {
-      toast.error('Cell number must be exactly 10 digits!');
-      return;
-    }
+  // Validate email format before hitting the server
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(formData.email.trim())) {
+    toast.error('Please enter a valid email address!');
+    return;
+  }
+
+  // Validate 10-digit cell number length
+  if (formData.cellNumber.length !== 10) {
+    toast.error('Cell number must be exactly 10 digits!');
+    return;
+  }
 
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords don't match!");
@@ -75,6 +82,7 @@ export const RegistrationPage = () => {
     <div className="login-container">
       <div className="login-content">
         <h2>Create a profile</h2>
+         
         <p>It only takes a minute to get started with your shopping list.</p>
 
         <form className="signup-form" onSubmit={handleSubmit}>
