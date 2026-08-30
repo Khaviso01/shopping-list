@@ -8,11 +8,13 @@
   --color-primary: #69b294;
   --color-primary-dark: #72a77b;
   --color-primary-light: #eaf5f0;
-  --color-ink: #1f2d28;
+  --color-ink: #1f2d287e;
   --color-ink-muted: #5b6c65;
   --color-border: #d9e6e0;
   --color-error: #ff1100;
   --color-error-bg: #fbeceb;
+
+  --login-reg-bg: #effff35f;
 
   --font-display: 'Geist', sans-serif;
   --secondary-font-display: 'Lobster', cursive;
@@ -55,9 +57,21 @@ button {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #ffffff;
+  background: var(--login-reg-bg);
   padding: 20px;
   box-sizing: border-box;
+}
+
+.login-title {
+  font-family: var(--secondary-font-display);
+  font-size: 44px;
+  color: var(--color-primary-dark);
+  border: none;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
 }
 
 .session-loading-screen {
@@ -111,7 +125,7 @@ button {
   height: 48px;
   padding: 0 16px;
   margin-bottom: 20px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-ink);
   border-radius: var(--radius-md);
   font-size: 15px;
   color: #2d3748;
@@ -167,17 +181,6 @@ button {
   text-decoration: underline;
 }
 
-/* Container Centering */
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #ffffff;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
 /* Card Wrapper */
 .login-content {
   width: 100%;
@@ -220,7 +223,7 @@ button {
   height: 48px;
   padding: 0 16px;
   margin-bottom: 18px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-ink);
   border-radius: var(--radius-md);
   font-size: 15px;
   color: #2d3748;

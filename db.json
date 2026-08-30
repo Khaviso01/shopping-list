@@ -9,27 +9,6 @@
       "id": "Nfb8eCtjg88"
     }
   ],
-  "items": [
-    {
-      "userId": "Nfb8eCtjg88",
-      "name": "banana",
-      "category": "fruits",
-      "quantity": "3",
-      "notes": "",
-      "imageUrl": "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDQzMzY1fDB8MXxzZWFyY2h8MXx8YmFuYW5hfGVufDF8fHx8MTc4NzgxMzUxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      "dateAdded": "2026-08-28T11:15:26.466Z",
-      "id": "g2019lu4EZo"
-    },
-    {
-      "userId": "Nfb8eCtjg88",
-      "name": "iPhone 13 Pro",
-      "category": "electronics",
-      "quantity": "1",
-      "notes": "",
-      "imageUrl": "https://images.unsplash.com/photo-1686657377704-3a888b5473d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDQzMzY1fDB8MXxzZWFyY2h8Mnx8aVBob25lJTIwMTMlMjBQcm98ZW58MXx8fHwxNzg3OTE2MzAwfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "dateAdded": "2026-08-28T19:28:22.102Z",
-      "id": "K5XAFt9CSt4"
-    }
-  ],
+  "items": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

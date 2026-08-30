@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import type { AppDispatch } from '../redux/store';
 import { loginUser } from '../redux/authSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons';
+import { ViewIcon, ViewOffIcon, ShopifyIcon } from '@hugeicons/core-free-icons';
 import '../index.css';
 
 export function LoginPage() {
@@ -40,7 +40,7 @@ export function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-content">
-        <h2>Log In</h2>
+        <h1 className="login-title"><HugeiconsIcon icon={ShopifyIcon} size={44} /> ShopBuddy</h1>
         <p>Sign in to pick up your shopping list right where you left it.</p>
 
         <form className="login-form" onSubmit={handleSubmit}>

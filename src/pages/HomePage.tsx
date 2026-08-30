@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import type { AppDispatch, RootState } from '../redux/store';
+import EmptyState from '../assets/empty-cart-cartoon.png'
 import {
   fetchItems,
   addItem,
@@ -13,7 +14,6 @@ import {
 } from '../redux/shoppingListSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
-  ShoppingBagRemoveIcon,
   Delete02Icon,
   ShoppingBag01Icon,
   PencilEdit02Icon,
@@ -225,12 +225,12 @@ export const HomePage: React.FC = () => {
           ) : filteredAndSortedItems.length === 0 ? (
             <div className="empty-state">
               <div className="cart-icon">
-                <HugeiconsIcon icon={ShoppingBagRemoveIcon} size={82} />
+                <img src={EmptyState}/>
               </div>
               <h3>
                 {searchQuery ? `No items found matching "${searchQuery}"` : 'Your shopping list is empty!'}
               </h3>
-              <p>{searchQuery ? 'Try searching for something else' : 'Start adding items to your list'}</p>
+              <p>{searchQuery ? 'Try searching for something else' : 'Looks like you have not made your list yet.'}</p>
             </div>
           ) : (
             <div className="item-list">
