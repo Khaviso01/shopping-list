@@ -184,11 +184,11 @@ export const HomePage: React.FC = () => {
       <div className="app-container">
         <div className="search-and-actions-bar">
           <Searchbar />
-          <button type="button" className="share-list-btn" onClick={handleShare} title="Share this list">
-            <HugeiconsIcon icon={Share08Icon} size={18} />
-          </button>
           <button type="button" className="open-modal-btn" onClick={handleOpenAddModal}>
             + Add New Item
+          </button>
+          <button type="button" className="share-list-btn" onClick={handleShare} title="Share this list">
+            <HugeiconsIcon icon={Share08Icon} size={18} />
           </button>
         </div>
 
