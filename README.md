@@ -156,8 +156,6 @@ Passwords are hashed with [bcryptjs](https://github.com/dcodeIO/bcrypt.js) (`bcr
 
 Changing your password on the Profile page works the same way: a new hash is computed and the old one is discarded.
 
-> Note: this is a training project. `db.json` is plain-text on disk and there's no server-side input validation or rate limiting — none of that is production-grade auth. For production, put a real API in front of json-server (or replace it with a proper backend) and add server-side validation.
-
 ### Item photos: Unsplash
 
 Instead of pasting an image URL, the Add/Edit Item modal lets you search Unsplash by keyword and pick a real photo from a grid of results (`src/services/unsplash.ts`). Selecting a photo stores its URL on the item. Per Unsplash's API guidelines, selecting a photo also fires a "download tracking" ping, separate from the search request, which Unsplash asks integrations to send whenever a photo is actually used.
