@@ -7,6 +7,7 @@ export const Searchbar: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
 
+  // handle changes to the search input and update the URL search params
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const newParams = new URLSearchParams(searchParams);

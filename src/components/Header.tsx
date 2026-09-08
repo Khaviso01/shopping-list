@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { User02Icon, ShopifyIcon } from '@hugeicons/core-free-icons';
 import type { RootState } from '../redux/store';
 
+
 export const Header: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);

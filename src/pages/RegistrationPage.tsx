@@ -43,7 +43,7 @@ export const RegistrationPage = () => {
       setErrors((prev) => ({ ...prev, [id]: undefined }));
     }
 
-    // For cellNumber, allow only numeric digits and max 10 characters
+    // ensuring that only numeric input is accepted and limit it to 10 digits, If the user is typing in the cell number field.
     if (id === 'cellNumber') {
       const numericValue = value.replace(/\D/g, '').slice(0, 10);
       setFormData({ ...formData, cellNumber: numericValue });
@@ -53,6 +53,7 @@ export const RegistrationPage = () => {
     setFormData({ ...formData, [id]: value });
   };
 
+  // Validate the form fields and return an object containing any errors found
   const validate = (): FieldErrors => {
     const newErrors: FieldErrors = {};
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -100,8 +101,7 @@ export const RegistrationPage = () => {
     // Omit confirmPassword from payload before dispatching
     const { confirmPassword: _confirmPassword, ...userPayload } = formData;
 
-    // registerUser hashes the password with bcrypt before it is ever sent
-    // to the server — the plain-text password never touches storage.
+    // registerUser hashes the password with bcrypt before it is ever sent to the server
     const result = await dispatch(registerUser(userPayload));
 
     if (registerUser.fulfilled.match(result)) {
@@ -119,9 +119,7 @@ export const RegistrationPage = () => {
         <h1 className="login-title"><HugeiconsIcon icon={ShopifyIcon} size={44} /> ShopBuddy</h1>
 
         <p>It only takes a minute to create a shopping list profile.</p>
-
-        {/* noValidate disables the browser's own validation popups — we
-            show our own inline "field is required" messages instead. */}
+        
         <form className="signup-form" onSubmit={handleSubmit} noValidate>
           <label htmlFor="name">Name</label>
           <input

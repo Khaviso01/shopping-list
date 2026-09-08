@@ -3,12 +3,7 @@ import bcrypt from 'bcryptjs';
 import * as api from '../services/api';
 import type { ApiUser } from '../services/api';
 
-// --- Password handling -------------------------------------------------
-// Passwords are only ever hashed with bcrypt (a one-way function) — never
-// encrypted-and-decrypted. Registration hashes the plain-text password;
-// login re-hashes the entered password internally and compares digests via
-// bcrypt.compare(). There is no code path anywhere that recovers a
-// plain-text password from a stored hash.
+// Password handling
 const SALT_ROUNDS = 10;
 const hashPassword = (plainText: string): string => bcrypt.hashSync(plainText, SALT_ROUNDS);
 const verifyPassword = (plainText: string, hash: string): boolean => bcrypt.compareSync(plainText, hash);
@@ -29,10 +24,6 @@ interface AuthState {
   status: 'idle' | 'loading' | 'failed';
   error: string | null;
   // Tracks whether we've finished checking for a saved session on page
-  // load/refresh. Routing waits for this to become 'resolved' before
-  // deciding to redirect to /login — otherwise a refresh briefly reads
-  // isAuthenticated as false (before resumeSession finishes) and bounces
-  // a logged-in user out to the login page.
   sessionStatus: 'checking' | 'resolved';
 }
 
@@ -46,20 +37,13 @@ const toPublicUser = (apiUser: ApiUser): User => ({
 
 const initialState: AuthState = {
   user: null,
-  // We only ever store the plain user id locally (a session pointer), never
-  // credentials. On boot the app resumes the session by re-fetching the
-  // profile from the json-server backend.
+  // Json profile authentication handled by user
   isAuthenticated: false,
   status: 'idle',
   error: null,
-  // If there's a saved session id, we need to verify it against the server
-  // before we know whether the user is really authenticated — start in
-  // 'checking' so routing waits. If there's nothing saved, there's nothing
-  // to check, so we can resolve immediately.
+  // Checking saved session to verify from server
   sessionStatus: localStorage.getItem(SESSION_KEY) ? 'checking' : 'resolved',
 };
-
-// ----- Thunks -----
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
@@ -97,7 +81,7 @@ export const loginUser = createAsyncThunk(
         return rejectWithValue('No account found with this email address.');
       }
 
-      // Only ever compares hashes — the stored password is never decrypted.
+      // comparing hashes
       if (!verifyPassword(payload.password, existing.passwordHash)) {
         return rejectWithValue('Incorrect password. Please try again.');
       }
@@ -131,7 +115,7 @@ export const updateProfile = createAsyncThunk(
     try {
       const { id, password, ...rest } = payload;
       const updates: Partial<ApiUser> = { ...rest };
-      // Re-hash if (and only if) the user actually typed a new password.
+      // Re-hash if ,only if the user actually typed a new password.
       if (password) {
         updates.passwordHash = hashPassword(password);
       }

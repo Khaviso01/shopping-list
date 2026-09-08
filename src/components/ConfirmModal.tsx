@@ -1,5 +1,6 @@
 import React from 'react';
 
+// props for the ConfirmModal component
 interface ConfirmModalProps {
   isOpen: boolean;
   title?: string;

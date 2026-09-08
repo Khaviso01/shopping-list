@@ -10,6 +10,7 @@ import {
   type UnsplashImageResult,
 } from '../services/unsplash';
 
+// props for the AddListModal component
 interface AddListModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -36,6 +37,7 @@ export const AddListModal: React.FC<AddListModalProps> = ({
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
   const [pendingDownloadLocation, setPendingDownloadLocation] = useState<string | null>(null);
 
+  // Reset form fields when the modal is opened or initialData changes
   useEffect(() => {
     if (initialData) {
       setName(initialData.name || '');
@@ -58,6 +60,7 @@ export const AddListModal: React.FC<AddListModalProps> = ({
 
   if (!isOpen) return null;
 
+  // Handle image search using Unsplash API
   const handleImageSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!imageQuery.trim()) return;
@@ -73,8 +76,8 @@ export const AddListModal: React.FC<AddListModalProps> = ({
       if (err instanceof UnsplashConfigError) {
         toast.error(err.message, { duration: 6000 });
       } else if (err instanceof Error) {
-        // Now specific per status code (401 bad key, 403 rate limit, etc.)
-        // instead of a generic message — see src/services/unsplash.ts.
+      
+  
         toast.error(err.message, { duration: 6000 });
       } else {
         toast.error('Could not search Unsplash. Please try again.');
@@ -84,18 +87,20 @@ export const AddListModal: React.FC<AddListModalProps> = ({
     }
   };
 
+
+  // Handle selecting an image from the search results
   const handleSelectImage = (image: UnsplashImageResult) => {
     setImageUrl(image.fullUrl);
     setSelectedImageId(image.id);
     setPendingDownloadLocation(image.downloadLocation);
   };
 
+  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
 
-    // Unsplash's API guidelines ask that a download event is registered
-    // once a photo is actually used, not just previewed in search results.
+    // Unsplash's API guidelines that a download event is registered
     if (pendingDownloadLocation) {
       triggerUnsplashDownload(pendingDownloadLocation);
     }

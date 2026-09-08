@@ -1,7 +1,4 @@
-// Thin fetch wrapper around the json-server backend (see `npm run server`).
-// Every persisted resource (users, items) lives in db.json and is served over
 // a plain REST API by json-server, so all reads/writes for the app go through here.
-
 const API_URL: string = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 export interface ApiUser {
@@ -33,6 +30,7 @@ export class ApiError extends Error {
   }
 }
 
+// Request function
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   let response: Response;
 
@@ -58,8 +56,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return (text ? JSON.parse(text) : undefined) as T;
 }
 
-// ----- Users -----
-
+// For the Users
 export const findUserByEmail = async (email: string): Promise<ApiUser | undefined> => {
   const users = await request<ApiUser[]>(`/users?email=${encodeURIComponent(email.toLowerCase())}`);
   return users[0];
@@ -86,8 +83,7 @@ export const updateUser = (id: string, updates: Partial<Omit<ApiUser, 'id'>>): P
     body: JSON.stringify(updates),
   });
 
-// ----- Shopping list items -----
-
+// Shopping list items
 export const getItemsForUser = (userId: string): Promise<ApiShoppingItem[]> =>
   request<ApiShoppingItem[]>(`/items?userId=${encodeURIComponent(userId)}`);
 

@@ -1,7 +1,4 @@
-// Wraps the Unsplash Search Photos endpoint so users can pick a real product
-// photo for a shopping list item instead of pasting an image URL by hand.
-// Docs: https://unsplash.com/documentation#search-photos
-
+// Wraps the Unsplash Search Photos endpoint so users can pick a real product image for their shopping list items.
 const UNSPLASH_ACCESS_KEY: string | undefined = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
 const UNSPLASH_API_URL = 'https://api.unsplash.com';
 
@@ -12,16 +9,12 @@ export interface UnsplashImageResult {
   fullUrl: string;
   photographerName: string;
   photographerUrl: string;
-  /** Endpoint Unsplash asks apps to ping when a photo is actually used (their attribution guideline). */
   downloadLocation: string;
 }
 
 export class UnsplashConfigError extends Error {}
 
-/**
- * Searches Unsplash for images matching `query` and returns a small,
- * UI-friendly result set the user can pick from.
- */
+// Searches Unsplash for images matching `query` and returns a small, UI-friendly result set the user can pick from
 export const searchUnsplashImages = async (
   query: string,
   perPage: number = 9
@@ -44,9 +37,7 @@ export const searchUnsplashImages = async (
   });
 
   if (!response.ok) {
-    // Read the response body for diagnostics — Unsplash includes helpful
-    // detail here (e.g. "Invalid access token"), logged for debugging but
-    // not shown verbatim to the user.
+    // Unsplash returns a JSON error body.
     const body = await response.text().catch(() => '');
     if (body) console.error('Unsplash search error response:', body);
 
@@ -68,6 +59,7 @@ export const searchUnsplashImages = async (
 
   const data = await response.json();
 
+  // Unsplash returns a `results` array of photos, each with a lot of fields.
   return (data.results || []).map(
     (photo: any): UnsplashImageResult => ({
       id: photo.id,
@@ -81,11 +73,7 @@ export const searchUnsplashImages = async (
   );
 };
 
-/**
- * Unsplash's API guidelines ask that apps ping this endpoint whenever a photo
- * is actually selected/used, separately from the search request itself.
- * Safe to "fire and forget" — a failure here shouldn't block the user.
- */
+// Unsplash API
 export const triggerUnsplashDownload = async (downloadLocation: string): Promise<void> => {
   if (!downloadLocation || !UNSPLASH_ACCESS_KEY) return;
   try {
@@ -93,6 +81,6 @@ export const triggerUnsplashDownload = async (downloadLocation: string): Promise
       headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` },
     });
   } catch {
-    // Non-critical — ignore network errors here.
+    // Non-critical failure, just log for debugging.
   }
 };

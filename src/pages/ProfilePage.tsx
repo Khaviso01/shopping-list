@@ -19,6 +19,7 @@ export const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
 
+  // Form state for profile fields, initialized with the current user's data
   const [formData, setFormData] = useState({
     name: user?.name || '',
     surname: user?.surname || '',
@@ -29,6 +30,7 @@ export const ProfilePage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Handle changes to the form inputs and update the formData state
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -42,8 +44,7 @@ export const ProfilePage: React.FC = () => {
 
     const { newPassword, ...profileFields } = formData;
 
-    // If the user typed a new password it is re-hashed with bcrypt before
-    // being saved — the old hash is discarded, never decrypted or reused.
+    // dispatch the updateProfile action with the updated profile fields and optional new password
     const result = await dispatch(
       updateProfile({
         id: user.id,
@@ -52,6 +53,7 @@ export const ProfilePage: React.FC = () => {
       })
     );
 
+    // Upd
     if (updateProfile.fulfilled.match(result)) {
       toast.success('Profile updated successfully!', { id: toastId });
       setFormData((prev) => ({ ...prev, newPassword: '' }));

@@ -17,6 +17,7 @@ export function LoginPage() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
+  // Handle form submission for user login
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
@@ -24,8 +25,7 @@ export function LoginPage() {
     setIsSubmitting(true);
     const toastId = toast.loading('Signing in...');
 
-    // loginUser fetches the stored password hash from json-server and
-    // verifies it with bcrypt.compare — the hash is never decrypted.
+    // Handle the login process by dispatching the loginUser action and providing feedback via toast notifications
     const result = await dispatch(loginUser({ email, password }));
 
     if (loginUser.fulfilled.match(result)) {

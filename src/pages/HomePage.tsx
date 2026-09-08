@@ -25,26 +25,25 @@ import AddListModal from '../components/AddListModal';
 import ConfirmModal from '../components/ConfirmModal';
 import '../index.css';
 
+
 export const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ShoppingItem | null>(null);
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
-  // Tracks which items are ticked as "completed" in this browsing session.
-  // Not persisted to the backend — a refresh clears it, same as the rest
-  // of the app's completion-checkbox behavior.
+
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
 
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
 
+  // Use selectors to access the Redux store state
   const user = useSelector((state: RootState) => state.auth.user);
   const items = useSelector((state: RootState) => state.shoppingList.items);
   const listStatus = useSelector((state: RootState) => state.shoppingList.status);
   const searchQuery = searchParams.get('search') || '';
   const sortBy = searchParams.get('sort') || 'name';
 
-  // Load this user's shopping list from the json-server backend whenever
-  // the signed-in user changes (e.g. after login).
+  // Use effect to fetch items when the component mounts or when the user changes
   useEffect(() => {
     if (user) {
       dispatch(fetchItems(user.id));
@@ -61,11 +60,13 @@ export const HomePage: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  // Handle saving a new item or updating an existing item
   const handleSaveItem = async (itemData: NewShoppingItemInput) => {
     if (!user) return;
     const isEditing = Boolean(editingItem);
     const toastId = toast.loading(isEditing ? 'Updating item...' : 'Saving new item...');
 
+    // If editing, dispatch the editItem action; otherwise, dispatch addItem
     const action = editingItem
       ? await dispatch(editItem({ ...editingItem, ...itemData }))
       : await dispatch(addItem({ userId: user.id, item: itemData }));
@@ -82,6 +83,8 @@ export const HomePage: React.FC = () => {
     }
   };
 
+
+  // Handle confirming the deletion of an item
   const handleConfirmDelete = async () => {
     if (!deletingItemId) return;
 
@@ -105,8 +108,8 @@ export const HomePage: React.FC = () => {
     toast.success(`Sorted by ${e.target.value}`);
   };
 
-  // Shares the current list view (including any active search/sort filters,
-  // which already live in the URL) so someone else can open the same view.
+
+  // Handle sharing the shopping list using the Web Share API or copying the link to the clipboard
   const handleShare = async () => {
     const shareUrl = window.location.href;
     const shareData = {
@@ -119,7 +122,7 @@ export const HomePage: React.FC = () => {
       try {
         await navigator.share(shareData);
       } catch {
-        // User cancelled the native share sheet — nothing to do.
+       
       }
       return;
     }
@@ -132,11 +135,9 @@ export const HomePage: React.FC = () => {
     }
   };
 
+  // Handle toggling the completion status of an item and updating the completedIds state
   const handleToggleComplete = (item: ShoppingItem, isChecked: boolean) => {
-  // The toast is a side effect, so it must NOT live inside the
-  // setCompletedIds updater function below — React (in Strict Mode /
-  // development) calls updater functions twice to verify they're pure,
-  // which was firing this toast twice per click.
+
   setCompletedIds((prev) => {
     const next = new Set(prev);
     if (isChecked) {
@@ -156,8 +157,8 @@ export const HomePage: React.FC = () => {
     .filter((item: ShoppingItem) => {
       const query = searchQuery.toLowerCase().trim();
       if (!query) return true;
-      // Matches on name OR category — an item shows up if either field
-      // contains the search text, not just the name.
+
+      // Matches on name OR category when searching
       const nameMatch = item.name.toLowerCase().includes(query);
       const categoryMatch = (item.category || '').toLowerCase().includes(query);
       return nameMatch || categoryMatch;
@@ -172,8 +173,8 @@ export const HomePage: React.FC = () => {
       return a.name.localeCompare(b.name);
     });
 
-  // Only count items that still exist — if a completed item gets deleted,
-  // its stale id in completedIds is simply never matched here.
+
+  // Calculate the number of completed items and the total number of items for the progress summary
   const completedCount = items.filter((item) => completedIds.has(item.id)).length;
   const totalCount = items.length;
 

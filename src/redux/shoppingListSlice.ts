@@ -32,7 +32,7 @@ const initialState: ShoppingListState = {
   error: null,
 };
 
-// ----- Thunks (all data lives in json-server / db.json) -----
+// Thunks, all data saved in Json server backend.
 
 export const fetchItems = createAsyncThunk(
   'shoppingList/fetchItems',
@@ -45,6 +45,7 @@ export const fetchItems = createAsyncThunk(
   }
 );
 
+// Add an item to the shopping list for a specific user.
 export const addItem = createAsyncThunk(
   'shoppingList/addItem',
   async (payload: { userId: string; item: NewShoppingItemInput }, { rejectWithValue }) => {
@@ -64,6 +65,8 @@ export const addItem = createAsyncThunk(
   }
 );
 
+
+// Edit an existing item in the shopping list.
 export const editItem = createAsyncThunk(
   'shoppingList/editItem',
   async (item: ShoppingItem, { rejectWithValue }) => {
@@ -75,6 +78,8 @@ export const editItem = createAsyncThunk(
   }
 );
 
+
+// Delete an item from the shopping list by its ID.
 export const deleteItem = createAsyncThunk(
   'shoppingList/deleteItem',
   async (id: string, { rejectWithValue }) => {
@@ -87,6 +92,8 @@ export const deleteItem = createAsyncThunk(
   }
 );
 
+
+// shopping list slice with reducers and extra reducers for handling async actions.
 export const shoppingListSlice = createSlice({
   name: 'shoppingList',
   initialState,
