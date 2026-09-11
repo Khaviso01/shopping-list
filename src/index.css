@@ -358,8 +358,6 @@ button {
   background: var(--color-white);
   border: 1px solid #cbd5e0;
 }
-
-/* Progress summary: "X of Y items completed" */
 .progress-summary {
   padding: 4px 16px 12px;
 }
@@ -445,12 +443,11 @@ button {
 }
 
 .title {
-  background-color: rgba(255, 255, 255, 0.11);
+  background-color: rgba(255, 255, 255, 0);
   font-family: var(--secondary-font-display);
-  font-size: 19px;
+  font-size: 24px;
   color: #ffffff;
   border: none;
-  padding: 6px 16px;
   border-radius: 16px;
   display: flex;
   align-items: center;
