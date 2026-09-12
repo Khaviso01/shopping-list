@@ -15,7 +15,7 @@ ShopBuddy is a shopping-list web application built with React, TypeScript, and R
   - Category
   - Quantity
   - Notes
-  - A photo, searched and picked from Unsplash
+  - A photo, searched and picked from Unsplash API
 - Edit or delete existing items.
 - Mark an item as completed in the current session with checkbox feedback.
 - Search items by name — the search term is reflected in the URL.
