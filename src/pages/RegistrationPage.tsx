@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import type { AppDispatch } from '../redux/store';
 import { registerUser } from '../redux/authSlice';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { ViewIcon, ViewOffIcon, ShopifyIcon } from '@hugeicons/core-free-icons';
+import { ViewIcon, ViewOffIcon, AddToListIcon } from '@hugeicons/core-free-icons';
 import '../index.css';
 
 type FieldErrors = {
@@ -116,7 +116,7 @@ export const RegistrationPage = () => {
   return (
     <div className="login-container">
       <div className="login-content">
-        <h1 className="login-title"><HugeiconsIcon icon={ShopifyIcon} size={44} /> ShopBuddy</h1>
+        <h1 className="login-title"><HugeiconsIcon icon={AddToListIcon} size={44} /> ShopBuddy</h1>
 
         <p>It only takes a minute to create a shopping list profile.</p>
         

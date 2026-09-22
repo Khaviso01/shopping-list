@@ -385,7 +385,7 @@ button {
   transition: width 0.25s ease;
 }
 
-/* Completed item — subtle strikethrough + dimming, checkbox stays fully visible */
+/* Completed item subtle strikethrough + dimming, checkbox stays fully visible */
 .item-completed .item-text,
 .item-completed .item-badge,
 .item-completed .item-notes {

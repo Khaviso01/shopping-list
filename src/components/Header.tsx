@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { User02Icon, ShopifyIcon } from '@hugeicons/core-free-icons';
+import { User02Icon, AddToListIcon } from '@hugeicons/core-free-icons';
 import type { RootState } from '../redux/store';
 
 
@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
     <header className="header">
       <div className="header-title-row">
         <button className="title" onClick={() => navigate('/home')}>
-          <HugeiconsIcon icon={ShopifyIcon} />
+          <HugeiconsIcon icon={AddToListIcon} />
           ShopBuddy
         </button>
         <div className="header-actions">
